@@ -38,6 +38,7 @@ class Forest :
             retourne la racine de la forêt (lui-même)
             :param self: la foret elle-meme
             :type self: Forest
+            :return: racine de la foret
         '''
         return self
     
@@ -49,6 +50,7 @@ class Forest :
             retourne une liste vide sinon
             :param self: la foret elle-meme
             :type self: Forest
+            :return: premier arbre de la foret
         '''
         if self.isEmpty():
             return []
@@ -63,6 +65,7 @@ class Forest :
             retourne une liste vide sinon
             :param self: la foret elle-meme
             :type self: Forest
+            :return: liste des sous-arbres du premier arbre
         '''
         if self.isEmpty() :
             return []
@@ -77,6 +80,7 @@ class Forest :
             retourne une liste vide sinon
             :param self: la foret elle-meme
             :type self: Forest
+            :return: liste des arbres de la foret sans le premier arbre
         '''
         if self.isEmpty():
             return []
@@ -91,12 +95,13 @@ class Forest :
             avec un parcours en profondeur
             :param self: la foret elle-meme
             :type self: Forest
+            :return: liste des etiquettes des noeuds de chaque arbre de la foret
         '''
         if self.isEmpty():
             return []
         
         current_node = self.firstTree().root()                      # on récupere la racine du premier arbre de la foret
-        subTree      = current_node.subTree_of_FirstTree()          # la liste des sous arbres du premier arbre de la foret
+        subTree      = current_node.sub_tree()                      # la liste des sous arbres du premier arbre de la foret
         rest         = self.rest()                                  # reste de la foret
         
         # CREATION DE LA NOUVELLE FORET
@@ -111,6 +116,7 @@ class Forest :
             avec un parcours en largeur
             :param self: la foret elle-meme
             :type self: Forest
+            :return: liste des etiquettes des noeuds de chaque arbre de la foret
         '''
         if self.isEmpty():
             return []
