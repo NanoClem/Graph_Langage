@@ -14,7 +14,7 @@ class Forest :
     def __init__(self, content) :
         '''
             CONSTRUCTEUR
-            param : content = liste des arbres de la foret
+            :param content: liste des arbres de la foret
         '''
         self.content  = content
     
@@ -23,7 +23,8 @@ class Forest :
     def isEmpty(self):
         '''
             permet de savoir si la forêt est vide
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if not self.content :
             return True
@@ -35,7 +36,8 @@ class Forest :
     def root(self):
         '''
             retourne la racine de la forêt (lui-même)
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         return self
     
@@ -45,7 +47,8 @@ class Forest :
         '''
             retourne le premier arbre de la forêt si la foret n'est pas vide
             retourne une liste vide sinon
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if self.isEmpty():
             return []
@@ -58,7 +61,8 @@ class Forest :
         '''
             retourne la liste des sous-arbres du premier arbre de la foret si elle n'est pas vide
             retourne une liste vide sinon
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if self.isEmpty() :
             return []
@@ -71,7 +75,8 @@ class Forest :
         '''
             retourne le reste de la foret si elle n'est pas vide
             retourne une liste vide sinon
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if self.isEmpty():
             return []
@@ -83,7 +88,9 @@ class Forest :
     def profondeur(self):
         '''
             parcours de la forêt en profondeur
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
+            
         '''
         if self.isEmpty():
             return []
@@ -101,7 +108,8 @@ class Forest :
     def largeur(self):
         '''
             parcours de la foret en largeur
-            param : self
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if self.isEmpty():
             return []
@@ -110,7 +118,7 @@ class Forest :
         subTree      = current_node.subTree_of_FirstTree()      # la liste des sous arbres du premier arbre de la foret
         rest         = self.rest()                              # reste de la foret
         
-        # creation nouvelle foret
+        # CREATION DE LA NOUVELLE FORET
         new_forest   = Forest(rest + subTree)                   # on s'interesse en premier au reste de la foret
         return new_forest.largeur()
         
