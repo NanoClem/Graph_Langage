@@ -89,6 +89,8 @@ class Forest :
         '''
             affiche le contenu de chaque noeud de chaque arbre de la foret
             avec un parcours en profondeur
+            :param self: la foret elle-meme
+            :type self: Forest
         '''
         if self.isEmpty():
             return []
@@ -101,6 +103,26 @@ class Forest :
         new_forest   = Forest(subTree + rest)                       # on s'interesse en premier aux sous-arbres du premier arbre
         return [current_node.content] + new_forest.display_deph()   # liste des etiquettes des noeuds
         
+    
+    
+    def display_width(self) :
+        '''
+            affiche le contenu de chaque noeud de chaque arbre de la foret
+            avec un parcours en largeur
+            :param self: la foret elle-meme
+            :type self: Forest
+        '''
+        if self.isEmpty():
+            return []
+        
+        current_node = self.firstTree().root()                      # on récupere la racine du premier arbre de la foret
+        subTree      = current_node.subTree_of_FirstTree()          # la liste des sous arbres du premier arbre de la foret
+        rest         = self.rest()                                  # reste de la foret
+        
+        # CREATION DE LA NOUVELLE FORET
+        new_forest   = Forest(rest + subTree)                       # on s'interesse en premier reste de la foret
+        return [current_node.content] + new_forest.display_width()  # liste des etiquettes des noeuds
+
 
 
     def Proto_profondeur(self):
