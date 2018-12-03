@@ -20,13 +20,25 @@ class RTree:
     def get_content(self):
         '''
             Retourne l'étiquette
+            :param self: RTree
+            :type self: RTree
         '''
         return self.content
     
     def root(self):
+        '''
+            Retourne la racine
+            :param self: RTree
+            :type self: RTree
+        '''
         return self
 
     def get_children(self):
+        '''
+            Retourne la liste des étiquettes des enfants
+            :param self: RTree
+            :type self: RTree
+        '''
         ret=[]
         if self.children==ret:
             return self.children
@@ -37,9 +49,19 @@ class RTree:
             return ret
     
     def sub_tree(self):
+        '''
+            Retourne le sous arbre sous forme d'une liste d'etiquettes
+            :param self: RTree
+            :type self: RTree
+        '''
         return self.get_children()
     
     def get_descending(self):
+        '''
+            Retourne la liste des etiquettes des descendants
+            :param self: RTree
+            :type self: RTree
+        '''
         if self.is_leaf():
             return self.get_children()
         else:
@@ -49,6 +71,11 @@ class RTree:
             return self.get_children() + ret
 
     def get_father(self,noeud):
+        '''
+            Retourne le noeud correspondant au père
+            :param self: RTree, noeud
+            :type self: RTree
+        '''
         for i in range(len(self.children)):
             if noeud==self.children[i]:
                 return self
@@ -56,6 +83,11 @@ class RTree:
             return self.children[i].get_father(noeud)
             
     def get_ascending(self,noeud):
+        '''
+            Retourne la liste des etiquettes des ancetres
+            :param self: RTree, noeud
+            :type self: RTree
+        '''
         if self.get_father(noeud)==None:
             return []
         else:
@@ -63,13 +95,28 @@ class RTree:
             return [pere.get_content()]+self.get_ascending(pere)
     
     def is_leaf(self):
+        '''
+            Retourne True si le noeud est une feuille et False sinon
+            :param self: RTree
+            :type self: RTree
+        '''
         return self.get_children()==[]
     
     def display_deph(self):
+        '''
+            Affiche les etiquettes de l'arborescence avec un parcours en profondeur
+            :param self: RTree
+            :type self: RTree
+        '''
         F=Forest([self])
         return F.display_deph()
     
     def display_width(self):
+        '''
+            Affiche les etiquettes de l'arborescence avec un parcours en largeur
+            :param self: RTree
+            :type self: RTree
+        '''
         F=Forest([self])
         return F.display_width()
     

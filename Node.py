@@ -3,6 +3,7 @@
 Created on Mon Dec  3 13:37:39 2018
 
 @author: dupouyj
+@doc : Clément
 """
 
 class Node:
