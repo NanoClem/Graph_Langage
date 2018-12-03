@@ -5,13 +5,22 @@ Created on Mon Dec  3 14:59:05 2018
 @author: dupouyj
 """
 
+from Forest import Forest
+
+
 
 class RTree:
     def __init__(self,content,children=[]):
+        '''
+            Constructeur
+        '''
         self.content=content
         self.children=children
     
     def get_content(self):
+        '''
+            Retourne l'étiquette
+        '''
         return self.content
     
     def root(self):
@@ -56,6 +65,14 @@ class RTree:
     def is_leaf(self):
         return self.get_children()==[]
     
+    def display_deph(self):
+        F=Forest([self])
+        return F.display_deph()
+    
+    def display_width(self):
+        F=Forest([self])
+        return F.display_width()
+    
     
 
 
@@ -82,3 +99,6 @@ print(n0.get_father(n2).get_content())
 print(n0.get_father(n0))
 print(n0.get_ascending(n4))
 print(n0.get_ascending(n0))
+
+print(n0.display_deph())
+#print(n0.display_width())
