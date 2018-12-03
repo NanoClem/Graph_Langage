@@ -20,7 +20,7 @@ from Forest import *
 class Arborescence :
     
     '''
-    
+    CONSTRUCTEUR
     '''
     def __init__(self, vertices, edges):
         self.vertices = vertices
@@ -28,10 +28,10 @@ class Arborescence :
         
         
     '''
-    Fonction root()
+    FONCTION RACINE
         retourne la racine de l'arborescence
     '''
-    def root():
+    def root(self):
         
         fathers = [ p[0] for p in self.edges ]
             
