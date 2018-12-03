@@ -4,11 +4,12 @@ Created on Tue Nov 27 14:11:45 2018
 
 @author: Clément
 """
-  
-# =============================================================================
-#   CLASSE FOREST
-# =============================================================================
+
 class Forest :
+    """
+        cette classe permet de representer une liste d'arbres afin de les traiter
+        plus facilement
+    """
     
     def __init__(self, content) :
         '''
