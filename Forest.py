@@ -5,35 +5,11 @@ Created on Tue Nov 27 14:11:45 2018
 @author: Clément
 """
 
+import numpy as np
 
+  
 # =============================================================================
-#   CLASSE ARBORESCENCE
-# =============================================================================
-class Arborescence :
-    
-    '''
-    
-    '''
-    def isEmpty():
-        pass
-    
-    
-    '''
-    
-    '''
-    def profondeur(self):
-        
-        if self.isEmpty():
-            return False
-        
-        f = Foret(self)
-        return f.profondeur()
-    
-    
-    
-    
-# =============================================================================
-#   CLASSE FORET
+#   CLASSE FOREST
 # =============================================================================
 class Forest :
     
@@ -95,10 +71,32 @@ class Forest :
         
         # creation de la nouvelle foret
         new_forest   = Forest(subTree, remains)
-        new_forest.profondeur(self)
+        new_forest.profondeur()
+        
+        return
+    
+    
+    '''
+    
+    '''
+    def largeur(self):
+            
+        if self.isEmpty():
+            return False
+        
+        current_node = self.firstTree().root()
+        #...Traitement
+        
+        remains      = self.remains()
+        subTree      = self.firstTree().subTree()
+        
+        # creation nouvelle foret
+        new_forest   = Forest(remains, subTree)
+        new_forest.largeur()
         
         return
         
+            
         
         
         
