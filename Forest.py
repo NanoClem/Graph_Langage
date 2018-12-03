@@ -4,110 +4,114 @@ Created on Tue Nov 27 14:11:45 2018
 
 @author: Clément
 """
-
-import numpy as np
-
   
 # =============================================================================
 #   CLASSE FOREST
 # =============================================================================
 class Forest :
     
-    '''
-    
-    '''
-    def __init__(self, content, children = []) :
+    def __init__(self, content) :
+        '''
+            CONSTRUCTEUR
+            param : content = liste des arbres de la foret
+        '''
         self.content  = content
-        self.children = children
     
     
-    '''
-    FONCTION ISEMPTY
-        permet de savoir si la forêt est vide
-    '''
+    
     def isEmpty(self):
+        '''
+            permet de savoir si la forêt est vide
+            param : self
+        '''
         if not self.content :
             return True
         else :
             return False
     
     
-    '''
-    RACINE DE LA FORET
-        retourne la racine de la forêt (lui-même)
-    '''
+    
     def root(self):
+        '''
+            retourne la racine de la forêt (lui-même)
+            param : self
+        '''
         return self
     
     
-    '''
-    PREMIER ARBRE DE LA FORET
-        retourne le premier arbre de la forêt
-    '''
+    
     def firstTree(self):
-        return self.content
-    
-    
-    '''
-    SOUS-ARBRES DE LA FORET
-        retourne la liste des sous-arbres de la forêt
-    '''
-    def subTree(self):
-        return self.children
-    
-    
-    '''
-    RESTE DE LA FORET
-        retourne le reste de la forêt (la forêt sans le premier arbre)
-    '''
-    def remains(self):
-        ret = []
-        for trees in self.content :
-            if trees != self.firstTree():
-                ret.append(trees)
-                
-        return ret
-    
-    
-    '''
-    PARCOURS DE LA FORET EN PROFONDEUR
-    '''
-    def profondeur(self):
-        
+        '''
+            retourne le premier arbre de la forêt si la foret n'est pas vide
+            retourne une liste vide sinon
+            param : self
+        '''
         if self.isEmpty():
             return []
         
-        current_node = self.firstTree().root()
+        return self.content[0]
+    
+    
+    
+    def SubTree_of_FirstTree(self) :
+        '''
+            retourne la liste des sous-arbres du premier arbre de la foret si elle n'est pas vide
+            retourne une liste vide sinon
+            param : self
+        '''
+        if self.isEmpty() :
+            return []
+            
+        return self.firstTree().get_children()   # liste des sous-arbre du premier arbre
+    
+    
+    
+    def rest(self) :
+        '''
+            retourne le reste de la foret si elle n'est pas vide
+            retourne une liste vide sinon
+            param : self
+        '''
+        if self.isEmpty():
+            return []
         
-        remains      = self.remains()
-        subTree      = current_node.firstTree().subTree()
+        return self.content[1:]     # liste des arbres de la foret sans le premier arbre
+    
+
+
+    def profondeur(self):
+        '''
+            parcours de la forêt en profondeur
+            param : self
+        '''
+        if self.isEmpty():
+            return []
         
-        # creation de la nouvelle foret
-        new_forest   = Forest(subTree, remains)
+        current_node = self.firstTree().root()                  # on récupere la racine du premier arbre de la foret
+        subTree      = current_node.subTree_of_FirstTree()      # la liste des sous arbres du premier arbre de la foret
+        rest         = self.rest()                              # reste de la foret
+        
+        # CREATION DE LA NOUVELLE FORET
+        new_forest   = Forest(subTree + rest)                   # on s'interesse en premier aux sous-arbres du premier arbre 
         return new_forest.profondeur()
 
+
     
-    
-    '''
-    PARCOURS DE LA FORET EN LARGEUR
-    '''
     def largeur(self):
-            
+        '''
+            parcours de la foret en largeur
+            param : self
+        '''
         if self.isEmpty():
             return []
         
-        current_node = self.firstTree().root()
-        
-        remains      = self.remains()
-        subTree      = current_node.firstTree().subTree()
+        current_node = self.firstTree().root()                  # on récupere la racine du premier arbre de la foret
+        subTree      = current_node.subTree_of_FirstTree()      # la liste des sous arbres du premier arbre de la foret
+        rest         = self.rest()                              # reste de la foret
         
         # creation nouvelle foret
-        new_forest   = Forest(remains, subTree)
+        new_forest   = Forest(rest + subTree)                   # on s'interesse en premier au reste de la foret
         return new_forest.largeur()
-        
-            
-        
-        
         
         
         
