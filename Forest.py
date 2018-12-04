@@ -16,7 +16,7 @@ class Forest :
             CONSTRUCTEUR
             :param content: liste des arbres de la foret
         '''
-        self.content  = content
+        self.content = content
     
     
     
@@ -122,7 +122,7 @@ class Forest :
             return []
         
         current_node = self.firstTree().root()                      # on récupere la racine du premier arbre de la foret
-        subTree      = current_node.subTree_of_FirstTree()          # la liste des sous arbres du premier arbre de la foret
+        subTree      = current_node.sub_tree()                      # la liste des sous arbres du premier arbre de la foret
         rest         = self.rest()                                  # reste de la foret
         
         # CREATION DE LA NOUVELLE FORET
@@ -141,7 +141,7 @@ class Forest :
             return []
         
         current_node = self.firstTree().root()                  # on récupere la racine du premier arbre de la foret
-        subTree      = current_node.subTree_of_FirstTree()      # la liste des sous arbres du premier arbre de la foret
+        subTree      = current_node.sub_tree()                  # la liste des sous arbres du premier arbre de la foret
         rest         = self.rest()                              # reste de la foret
         
         # CREATION DE LA NOUVELLE FORET
@@ -160,7 +160,7 @@ class Forest :
             return []
         
         current_node = self.firstTree().root()                  # on récupere la racine du premier arbre de la foret
-        subTree      = current_node.subTree_of_FirstTree()      # la liste des sous arbres du premier arbre de la foret
+        subTree      = current_node.sub_tree()                  # la liste des sous arbres du premier arbre de la foret
         rest         = self.rest()                              # reste de la foret
         
         # CREATION DE LA NOUVELLE FORET
