@@ -8,16 +8,25 @@ Created on Thu Dec 13 08:16:09 2018
 
 class BNode :
     """
-    
+        La classe modelise un abr equilibre sous forme de noeuds
     """
     cpt=0
 
     def __init__(self, content, leftChild=None, rightChild=None) :
+        '''
+            Constructeur
+            :param: node, content, leftChild, rightChild
+        '''
         self.content=content
         self.leftChild=leftChild
         self.rightChild=rightChild
     
     def get_children(self):
+        '''
+            Retourne les enfants d'un noeud
+            :param: node
+            :return: list
+        '''
         ret=[]
         if self.leftChild != None:
             ret=ret+[self.leftChild]
@@ -26,6 +35,11 @@ class BNode :
         return ret
     
     def exist(self,look4):
+        '''
+            Retourne True si l'etiquette recherchee existe dans l'arbre, et False sinon
+            :param: node, etiquette
+            :return: bool
+        '''
         BNode.cpt+=1
         if self.content==str(look4):
             return True
@@ -40,6 +54,11 @@ class BNode :
 # =============================================================================
 
 def exist_list(liste,look4):
+    '''
+        Retourne True si l'etiquette recherchee existe dans une liste, et False sinon
+            :param: liste, etiquette
+            :return: bool
+    '''
     cpt=0
     for i in range(len(liste)):
         cpt+=1
@@ -73,8 +92,9 @@ print("leftChild n1 : ", n1.rightChild.content)
 print("enfants n2 : ", n2.get_children())
 
 
-
-
+# =============================================================================
+# Comparaisons methodes exist
+# =============================================================================
 
 print("\n recherche avec les deux versions de exist pour chaque valeur de l'ABR" )
 moyenne1=0
