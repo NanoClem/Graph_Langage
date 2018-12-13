@@ -11,3 +11,6 @@ class BNode :
     
     """
 
+
+    def __init__() :
+        pass
