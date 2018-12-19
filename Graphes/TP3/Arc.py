@@ -13,7 +13,7 @@ class Arc :
     """
     
     
-    def __init__(self, s_previous = [], s_next = [], name, period) :
+    def __init__(self, s_previous, s_next, name, period) :
         """
         Constructuer
         :param s_previous: etape precedente
