@@ -85,6 +85,18 @@ if __name__=="__main__":
     nodes=[n0,n1,n2,n3,n4,n5,n6,n7,n8]
     
     
+    a9=Arc(n7,n8,'H',10)
+    a8=Arc(n5,n7,None,0)
+    a7=Arc(n3,n7,None,0)
+    a6=Arc(n6,n7,'G',60)
+    a5=Arc(n2,n6,'F',30)
+    a4=Arc(n4,n5,'E',10)
+    a3=Arc(n1,n4,'D',10)
+    a2=Arc(n2,n3,'C',30)
+    a1=Arc(n1,n2,'B',90)
+    a0=Arc(n0,n1,'A',30)
+    
+    
     Pert=PERT(nodes)
     print(Pert.critique(Pert.root()))
     
