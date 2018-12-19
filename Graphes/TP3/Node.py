@@ -24,6 +24,15 @@ class Node:
         self.date_au_plus_tard=date_au_plus_tard
         self.previous_steps=previous_steps
         self.next_steps=next_steps
+        
+        
+        
+    def setPrevious(self, new_previous_steps) :
+        """
+        Modifie la liste des etapes precedentes
+        :param new_previous_steps: nouvelle liste des etapes precedentes
+        """
+        self.previous_steps = new_previous_steps
     
 
     def get_number(self):
@@ -47,6 +56,7 @@ class Node:
         """
         return self.date_au_plus_tard
     
+    
     def get_previous_steps(self):
         """
             accesseur des etapes precedentes d'un noeud 
@@ -60,5 +70,8 @@ class Node:
             :return: liste des etapes suivantes
         """
         return self.next_steps
+    
+    def is_leaf(self):
+        return self.get_next_steps==[]
     
 
