@@ -209,8 +209,8 @@ class ABR(BNode) :
             return self.root()
                 
         # Construction de l'ABR
-        v = self.values.pop()       # la valeur est enlevee de la liste dans tous les cas
-        if v != None and not self.exist(v) :      # on ajoute le noeud s'il n'existe pas deja
+        v = self.values.pop()                   # la valeur est enlevee de la liste dans tous les cas
+        if v != None and not self.exist(v) :    # on ajoute le noeud s'il n'existe pas deja
             self.add_node(v)
             
         return self.makeABR()
@@ -226,7 +226,7 @@ class ABR(BNode) :
 
 if __name__ == "__main__" :
     
-    intVal  = [1, 5, 9, 7, 6, 4, 8, 3, 2]                           # liste des labels(entiers)
+    intVal  = [1, 5, 9, 7, 6, 4, 8, 3, 2]              # liste des labels(entiers)
     charVal = ["il", "est", "2", "h", "a", "laide"]    # liste des labels(char), compares selon la longueur de chaîne
     
     intABR = ABR(intVal)
