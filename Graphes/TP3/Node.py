@@ -33,7 +33,26 @@ class Node:
         :param new_previous_steps: nouvelle liste des etapes precedentes
         """
         self.previous_steps = new_previous_steps
+        
+      
+        
+    def setDateEarly(self, new_date) :
+        """
+        Modifie la date au plus tot du noeud
+        :param new_date: nouvelle date au plus tot
+        """
+        self.date_au_plus_tot = new_date
     
+    
+    
+    def setDateLate(self, new_date) :
+        """
+        Modifie la date au plus tard du noeud
+        :param new_date: nouvelle date au plus tard
+        """
+        self.date_au_plus_tard = new_date
+    
+
 
     def get_number(self):
         """
@@ -42,12 +61,16 @@ class Node:
         """
         return self.number
     
+    
+    
     def get_au_plus_tot(self):
         """
             accesseur de la date au plus tot du noeud
             :return: date au plus tot
         """
         return self.date_au_plus_tot
+    
+    
     
     def get_au_plus_tard(self):
         """
@@ -57,6 +80,7 @@ class Node:
         return self.date_au_plus_tard
     
     
+    
     def get_previous_steps(self):
         """
             accesseur des etapes precedentes d'un noeud 
@@ -64,12 +88,16 @@ class Node:
         """
         return self.previous_steps
     
+    
+    
     def get_next_steps(self):
         """
             accesseur des etapes suivantes d'un noeud 
             :return: liste des etapes suivantes
         """
         return self.next_steps
+    
+    
     
     def is_leaf(self):
         return self.get_next_steps==[]

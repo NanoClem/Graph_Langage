@@ -11,18 +11,35 @@ import math
 
 
 class PERT :
+    
+    
     def __init__(self, nodes=[], arcs=[]):
         self.nodes=nodes
         self.arcs=arcs
     
+    
+    
     def get_nodes(self):
         return self.nodes
+    
+    
     
     def get_arcs(self):
         return self.arcs
     
+    
+    
+    def get_arc(self, node1, node2):
+        for arc in self.get_arcs() :
+            if arc.getBeginStep() == node1 and arc.getEndStep() == node2:
+                return arc
+            
+    
+    
     def is_empty(self,elem):
         return elem==[]
+    
+    
     
     def root(self):
         for i in self.nodes:
@@ -31,10 +48,8 @@ class PERT :
     
 
     
-    def get_arc(self,node1,node2):
-        for a in self.arcs:
-            if a.s_previous==node1 and a.s_next==node2:
-                return a
+    def make_pert(self):
+        pass
     
     
     
@@ -57,55 +72,50 @@ class PERT :
                 crit = self.diff(node.get_next_steps()[i])
                 indice_node=i
         return [node.number] + self.critique(node.get_next_steps()[indice_node])
+    
+    
+    
+    def computeLate(self) :
+        """
+        
+        """
+        node2manage = self.get_nodes()
+        while node2manage != [] :
+            
+            for node in node2manage :
+                if node.get_previous_steps() == [] :
+                    node.setDateLate(0)
+                    return True
+                
+                if node.getDateLate() == None :
+                    print("je fais rien")
+                    
+                else :
+                    previous_arc = self.get_arc(node, node.get_previous_steps())
+                    arc_value = previous_arc.getPeriod()
+                    current_date = node.getDateLate()
+                
+                    node.get_previous_steps().setDateLate(current_date - arc_value)
+        
+        return True
+                   
                 
 
 
-            
-    def unknownOPlusTot(self,previouses):
-        for i in range(len(previouses)):
-            if previouses[i].date_au_plus_tot==None:
-                return True
-
-
-   
-    def compute_au_plus_tot(self, node2manage):
-        if node2manage==[]:
-            return
-        
-        current_node = node2manage[0]
-        previouses = current_node.previous_steps
-        if previouses==[]:
-            current_node.date_au_plus_tot=0
-            self.compute_au_plus_tot(node2manage[1:])
-        
-        if self.unknownOPlusTot(previouses):
-            self.compute_au_plus_tot2(node2manage+[current_node])
-        
-        else:
-            date=0
-            for i in range(len(previouses)):
-                arc=self.get_arc(previouses[i],current_node)
-                
-                if previouses[i].date_au_plus_tot + arc.period > date:
-                    date = previouses[i].date_au_plus_tot + arc.period
-                    current_node.date_au_plus_tot = date
-                    self.compute_au_plus_tot(node2manage[1:])
-         
-            
 # =============================================================================
 # 
 # =============================================================================
 
-if __name__=="__main__":
-    n8=Node(8,None,220,[],[])
-    n7=Node(7,None,210,[],[n8])
-    n6=Node(6,None,150,[],[n7])
-    n5=Node(5,None,210,[],[n7])
-    n4=Node(4,None,200,[],[n5])
-    n3=Node(3,None,210,[],[n7])
-    n2=Node(2,None,120,[],[n3,n6])
-    n1=Node(1,None,30,[],[n2,n4])    
-    n0=Node(0,None,0,[],[n1])
+if __name__ == "__main__" :
+    n8=Node(8,220,220,[],[])
+    n7=Node(7,210,210,[],[n8])
+    n6=Node(6,150,150,[],[n7])
+    n5=Node(5,50,210,[],[n7])
+    n4=Node(4,40,200,[],[n5])
+    n3=Node(3,150,210,[],[n7])
+    n2=Node(2,120,120,[],[n3,n6])
+    n1=Node(1,30,30,[],[n2,n4])    
+    n0=Node(0,0,0,[],[n1])
     n7.setPrevious([n3,n6,n5])
     
     n8.setPrevious([n7])
@@ -130,13 +140,9 @@ if __name__=="__main__":
     a1=Arc(n1,n2,'B',90)
     a0=Arc(n0,n1,'A',30)
     
-    arcs=[a0,a1,a2,a3,a4,a5,a6,a7,a8,a9]
     
-    Pert=PERT(nodes,arcs)
-    #print(Pert.critique(Pert.root()))
-    Pert.compute_au_plus_tot(Pert.nodes)
-    for i in Pert.nodes:
-        print("date au plus tot du noeud "+str(i.number), i.date_au_plus_tot)
+    Pert=PERT(nodes)
+    print(Pert.critique(Pert.root()))
     
     
     
