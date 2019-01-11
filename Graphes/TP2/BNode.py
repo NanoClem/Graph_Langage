@@ -100,6 +100,7 @@ class BNode :
         BNode.cpt+=1
         if self.content==str(look4):
             return True
+        
         found = False
         for i in range(len(self.get_children())):
             found=found or self.get_children()[i].exist(look4)
@@ -108,11 +109,15 @@ class BNode :
     
 
 
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
 def exist_list(liste,look4):
     '''
         Retourne True si l'etiquette recherchee existe dans une liste, et False sinon
-            :param: liste, etiquette
-            :return: bool
+        :param: liste, etiquette
+        :return: bool
     '''
     cpt=0
     for i in range(len(liste)):
