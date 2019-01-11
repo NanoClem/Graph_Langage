@@ -1,0 +1,233 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> DATA
+Rule 1     DATA -> get URI CONSTRAINT
+Rule 2     DATA -> get URI
+Rule 3     URI -> URL
+Rule 4     URL -> http HTTP1 NAME DOT EXTENSION
+Rule 5     CONSTRAINT -> contains NAME
+Rule 6     CONSTRAINT -> excludes NAME
+Rule 7     CONSTRAINT -> contains NAME OPERATOR CONSTRAINT
+Rule 8     CONSTRAINT -> excludes NAME OPERATOR CONSTRAINT
+Rule 9     OPERATOR -> and
+Rule 10    OPERATOR -> or
+
+Terminals, with rules where they appear
+
+DOT                  : 4
+EXTENSION            : 4
+HTTP1                : 4
+NAME                 : 4 5 6 7 8
+and                  : 9
+contains             : 5 7
+error                : 
+excludes             : 6 8
+get                  : 1 2
+http                 : 4
+or                   : 10
+
+Nonterminals, with rules where they appear
+
+CONSTRAINT           : 1 7 8
+DATA                 : 0
+OPERATOR             : 7 8
+URI                  : 1 2
+URL                  : 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . DATA
+    (1) DATA -> . get URI CONSTRAINT
+    (2) DATA -> . get URI
+
+    get             shift and go to state 2
+
+    DATA                           shift and go to state 1
+
+state 1
+
+    (0) S' -> DATA .
+
+
+
+state 2
+
+    (1) DATA -> get . URI CONSTRAINT
+    (2) DATA -> get . URI
+    (3) URI -> . URL
+    (4) URL -> . http HTTP1 NAME DOT EXTENSION
+
+    http            shift and go to state 4
+
+    URL                            shift and go to state 3
+    URI                            shift and go to state 5
+
+state 3
+
+    (3) URI -> URL .
+
+    contains        reduce using rule 3 (URI -> URL .)
+    excludes        reduce using rule 3 (URI -> URL .)
+    $end            reduce using rule 3 (URI -> URL .)
+
+
+state 4
+
+    (4) URL -> http . HTTP1 NAME DOT EXTENSION
+
+    HTTP1           shift and go to state 6
+
+
+state 5
+
+    (1) DATA -> get URI . CONSTRAINT
+    (2) DATA -> get URI .
+    (5) CONSTRAINT -> . contains NAME
+    (6) CONSTRAINT -> . excludes NAME
+    (7) CONSTRAINT -> . contains NAME OPERATOR CONSTRAINT
+    (8) CONSTRAINT -> . excludes NAME OPERATOR CONSTRAINT
+
+    $end            reduce using rule 2 (DATA -> get URI .)
+    contains        shift and go to state 7
+    excludes        shift and go to state 9
+
+    CONSTRAINT                     shift and go to state 8
+
+state 6
+
+    (4) URL -> http HTTP1 . NAME DOT EXTENSION
+
+    NAME            shift and go to state 10
+
+
+state 7
+
+    (5) CONSTRAINT -> contains . NAME
+    (7) CONSTRAINT -> contains . NAME OPERATOR CONSTRAINT
+
+    NAME            shift and go to state 11
+
+
+state 8
+
+    (1) DATA -> get URI CONSTRAINT .
+
+    $end            reduce using rule 1 (DATA -> get URI CONSTRAINT .)
+
+
+state 9
+
+    (6) CONSTRAINT -> excludes . NAME
+    (8) CONSTRAINT -> excludes . NAME OPERATOR CONSTRAINT
+
+    NAME            shift and go to state 12
+
+
+state 10
+
+    (4) URL -> http HTTP1 NAME . DOT EXTENSION
+
+    DOT             shift and go to state 13
+
+
+state 11
+
+    (5) CONSTRAINT -> contains NAME .
+    (7) CONSTRAINT -> contains NAME . OPERATOR CONSTRAINT
+    (9) OPERATOR -> . and
+    (10) OPERATOR -> . or
+
+    $end            reduce using rule 5 (CONSTRAINT -> contains NAME .)
+    and             shift and go to state 14
+    or              shift and go to state 16
+
+    OPERATOR                       shift and go to state 15
+
+state 12
+
+    (6) CONSTRAINT -> excludes NAME .
+    (8) CONSTRAINT -> excludes NAME . OPERATOR CONSTRAINT
+    (9) OPERATOR -> . and
+    (10) OPERATOR -> . or
+
+    $end            reduce using rule 6 (CONSTRAINT -> excludes NAME .)
+    and             shift and go to state 14
+    or              shift and go to state 16
+
+    OPERATOR                       shift and go to state 17
+
+state 13
+
+    (4) URL -> http HTTP1 NAME DOT . EXTENSION
+
+    EXTENSION       shift and go to state 18
+
+
+state 14
+
+    (9) OPERATOR -> and .
+
+    contains        reduce using rule 9 (OPERATOR -> and .)
+    excludes        reduce using rule 9 (OPERATOR -> and .)
+
+
+state 15
+
+    (7) CONSTRAINT -> contains NAME OPERATOR . CONSTRAINT
+    (5) CONSTRAINT -> . contains NAME
+    (6) CONSTRAINT -> . excludes NAME
+    (7) CONSTRAINT -> . contains NAME OPERATOR CONSTRAINT
+    (8) CONSTRAINT -> . excludes NAME OPERATOR CONSTRAINT
+
+    contains        shift and go to state 7
+    excludes        shift and go to state 9
+
+    CONSTRAINT                     shift and go to state 19
+
+state 16
+
+    (10) OPERATOR -> or .
+
+    contains        reduce using rule 10 (OPERATOR -> or .)
+    excludes        reduce using rule 10 (OPERATOR -> or .)
+
+
+state 17
+
+    (8) CONSTRAINT -> excludes NAME OPERATOR . CONSTRAINT
+    (5) CONSTRAINT -> . contains NAME
+    (6) CONSTRAINT -> . excludes NAME
+    (7) CONSTRAINT -> . contains NAME OPERATOR CONSTRAINT
+    (8) CONSTRAINT -> . excludes NAME OPERATOR CONSTRAINT
+
+    contains        shift and go to state 7
+    excludes        shift and go to state 9
+
+    CONSTRAINT                     shift and go to state 20
+
+state 18
+
+    (4) URL -> http HTTP1 NAME DOT EXTENSION .
+
+    contains        reduce using rule 4 (URL -> http HTTP1 NAME DOT EXTENSION .)
+    excludes        reduce using rule 4 (URL -> http HTTP1 NAME DOT EXTENSION .)
+    $end            reduce using rule 4 (URL -> http HTTP1 NAME DOT EXTENSION .)
+
+
+state 19
+
+    (7) CONSTRAINT -> contains NAME OPERATOR CONSTRAINT .
+
+    $end            reduce using rule 7 (CONSTRAINT -> contains NAME OPERATOR CONSTRAINT .)
+
+
+state 20
+
+    (8) CONSTRAINT -> excludes NAME OPERATOR CONSTRAINT .
+
+    $end            reduce using rule 8 (CONSTRAINT -> excludes NAME OPERATOR CONSTRAINT .)
+
