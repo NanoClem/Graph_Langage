@@ -9,8 +9,7 @@ from Route import Route
 
 
 def main() :
-    """
-    """
+
     # RENSEIGNEMENT DES ARRETS DE BUS
     stationName = ["LYCÉE_DE_POISY", "POISY_COLLÈGE", "Vernod"]
     stationsBus = []
@@ -37,6 +36,7 @@ def main() :
     #   TEST 2 : Trajet du bus
     #============================================================
     pathSibra1.printRoute()
+
 
 
 if __name__ == '__main__':

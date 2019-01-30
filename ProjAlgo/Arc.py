@@ -47,6 +47,7 @@ class Arc :
 
     def printArc(self) :
         """
+        Affiche le trajet entre les deux arrets
         """
         nameBegin = self.begin.getName()
         nameEnd   = self.end.getName()
