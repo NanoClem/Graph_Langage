@@ -27,7 +27,7 @@ class Route :
         Construit la route du bus en fonction du sens du trajet
         :param direction: sens du trajet du bus
         """
-        stopBus = self.bus.getStations()                    # liste des arrets du bus
+        stopBus = self.bus.getStations()                # liste des arrets du bus
 
         if(not direction) :
             stopBus.reverse()   # sens retour : on inverse l'ordre des arrets
@@ -41,13 +41,9 @@ class Route :
         """
         Affiche la route
         """
+        #ARRETS SUR LE TRAJET
         print("ROUTE BUS " + str(self.bus.getNum()))
         for i in range(len(self.route)) :
             self.route[i].printArc()
-
-
-
-    def dijkstra(self) :
-        """
-        """
-        pass
+        #TERMINUS
+        print("TERMINUS : " + self.bus.getTerminus().getName())

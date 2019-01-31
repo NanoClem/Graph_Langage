@@ -52,12 +52,12 @@ class Bus :
         return self._terminus
 
 
-    def setTerminus(self) :
+    def setTerminus(self, new_terminus) :
         """
         Modifie l'arret terminus
         :return: arret terminus du bus
         """
-        self._terminus = self._stations[self.getNbStations()-1]
+        self._terminus = new_terminus
 
 
     def printStations(self):

@@ -11,13 +11,13 @@ from Route import Route
 def main() :
 
     # LECTURES DES DONNEES SIBRA
-    filename = "1_Poisy-ParcDesGlaisins.txt"
-    reader = DataReader(filename)
-    reader.readStations()           # lecture du nom des arrets
+    filename = "1_Poisy-ParcDesGlaisins.txt"    # fichier des horaires Sibra1
+    reader = DataReader(filename)               # nouvel objet pour la lecture des donnees
+    reader.readStations()                       # lecture du nom des arrets
 
 
-    # RENSEIGNEMENT DES ARRETS DE BUS
-    stationName = ["LYCÉE_DE_POISY", "POISY_COLLÈGE", "Vernod"]
+    # ARRETS DE BUS
+    stationName = reader.getDataNames()
     stationsBus = []
 
     for i in range(len(stationName)) :
@@ -25,9 +25,10 @@ def main() :
         stationsBus.append(new_station)
 
     Sibra1 = Bus(1, stationsBus)
+    Sibra1.setTerminus(stationsBus[-1])         # dernier arret de la liste
 
 
-    # RENSEIGNEMENT DU TRAJET
+    # ROUTE DES BUS
     pathSibra1 = Route(Sibra1)
     pathSibra1.buildRoute(True)     # Sens aller
 
@@ -35,7 +36,7 @@ def main() :
     #============================================================
     #   TEST 1 : Lecture du fichier
     #============================================================
-
+    #reader.printStsName()   #Affichage des noms des stations
 
     #============================================================
     #   TEST 2 : Bus et ses arrets
@@ -45,7 +46,7 @@ def main() :
     #============================================================
     #   TEST 3 : Trajet du bus
     #============================================================
-    #pathSibra1.printRoute()
+    pathSibra1.printRoute()
 
 
 

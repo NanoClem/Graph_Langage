@@ -15,7 +15,7 @@ class DataReader :
     def __init__(self, Fname) :
         """
         CONSTRUCTEUR de lecteur de fichier de donnees de circulation
-        :param Fname: nom du fichier
+        param Fname : nom du fichier
         """
         self._filename = Fname
         self._content  = ""
@@ -29,12 +29,12 @@ class DataReader :
             print("Erreur : le fichier n'a pas pu etre ouvert !")
 
 
-    def sliceContent(self) :
+    def getDataNames(self) :
         """
-        Decoupe et renvoie les blocs separes par un double retour chariot
-        :return: liste des blocs
+        Retourne les noms des arrets lues dans le fichier
+        return : list of the names
         """
-        return self._content.split("\n\n")
+        return self._stsName
 
 
     def setFilename(self, new_filename):
@@ -52,6 +52,15 @@ class DataReader :
         """
         for station in self._stsName :
             print(station + " | ", end='')  # pas de retour a la ligne
+        print('\n')
+
+
+    def sliceContent(self) :
+        """
+        Decoupe et renvoie les blocs separes par un double retour chariot
+        return : liste des blocs
+        """
+        return self._content.split("\n\n")
 
 
     def readStations(self) :
