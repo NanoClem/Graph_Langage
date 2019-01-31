@@ -25,19 +25,16 @@ class Route :
     def buildRoute(self, direction = True) :
         """
         Construit la route du bus en fonction du sens du trajet
+        :param direction: sens du trajet du bus
         """
         stopBus = self.bus.getStations()                    # liste des arrets du bus
 
-        # SENS ALLER
-        if(direction) :
-            for i in range(len(stopBus)-1) :
-                new_arc = Arc(stopBus[i], stopBus[i+1])     # nouveau chemin entre deux arrets
-                self.route.append(new_arc)                  # ajout du chemin au trajet du bus
-        # SENS RETOUR
-        else :
-            for i in range(len(stopBus), 0, -1) :
-                new_arc = Arc(stopBus[i], stopBus[i-1])
-                self.route.append(new_arc)
+        if(not direction) :
+            stopBus.reverse()   # sens retour : on inverse l'ordre des arrets
+
+        for i in range(len(stopBus)-1) :
+            new_arc = Arc(stopBus[i], stopBus[i+1])     # nouveau chemin entre deux arrets
+            self.route.append(new_arc)                  # ajout du chemin au trajet du bus
 
 
     def printRoute(self) :

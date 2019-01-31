@@ -52,18 +52,12 @@ class Bus :
         return self._terminus
 
 
-    def setTerminus(self, direction = True) :
+    def setTerminus(self) :
         """
-        Modifie l'arret terminus du bus en fonction du sens du trajet
-        :param direction: sens de trajet du bus
+        Modifie l'arret terminus
         :return: arret terminus du bus
         """
-        # SENS ALLER : le terminus est en fin de liste
-        if direction :
-            self._terminus = self._stations[self.getNbStations()-1]
-        # SENS RETOUR : le terminus est au debut de liste
-        else :
-            self._terminus = self._stations[0]
+        self._terminus = self._stations[self.getNbStations()-1]
 
 
     def printStations(self):

@@ -2,13 +2,19 @@
 creator : decoopmc
 """
 
-
+from DataReader import DataReader
 from Bus import Bus
 from Station import Station
 from Route import Route
 
 
 def main() :
+
+    # LECTURES DES DONNEES SIBRA
+    filename = "1_Poisy-ParcDesGlaisins.txt"
+    reader = DataReader(filename)
+    reader.readStations()           # lecture du nom des arrets
+
 
     # RENSEIGNEMENT DES ARRETS DE BUS
     stationName = ["LYCÉE_DE_POISY", "POISY_COLLÈGE", "Vernod"]
@@ -26,16 +32,20 @@ def main() :
     pathSibra1.buildRoute(True)     # Sens aller
 
 
+    #============================================================
+    #   TEST 1 : Lecture du fichier
+    #============================================================
+
 
     #============================================================
-    #   TEST 1 : Bus et ses arrets
+    #   TEST 2 : Bus et ses arrets
     #============================================================
-    Sibra1.printStations()
+    #Sibra1.printStations()
 
     #============================================================
-    #   TEST 2 : Trajet du bus
+    #   TEST 3 : Trajet du bus
     #============================================================
-    pathSibra1.printRoute()
+    #pathSibra1.printRoute()
 
 
 
