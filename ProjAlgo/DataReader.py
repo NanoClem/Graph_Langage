@@ -12,12 +12,12 @@ class DataReader :
         - les horaires des bus (normales, nuit, vacances, dimanche et feries)
     """
 
-    def __init__(self, Fname = "") :
+    def __init__(self) :
         """
         CONSTRUCTEUR de lecteur de fichier de donnees de circulation
         param Fname : nom du fichier
         """
-        self._filename = Fname
+        self._filename = ""
         self._content  = ""
 
 

@@ -19,10 +19,10 @@ class BusNetwork :
         self.network = new_routes
 
 
-    def getSameStations(self, route1, route2) :
+    def getSameStations(route1, route2) :
         """
-        Retourne le ou les arrets en commun entre deux trajets
-        return : liste des trajets en commun
+        Retourne le ou les arrets en commun entre deux routes
+        return : liste des arrets en commun
         """
         bus1, bus2 = route1.getBus(), route2.getBus()
         sts1, sts2 = set(bus1.getStationsName()), set(bus2.getStationsName())
