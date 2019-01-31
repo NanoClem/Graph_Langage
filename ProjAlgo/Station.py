@@ -12,7 +12,7 @@ class Station :
     def __init__(self, inputName) :
         """
         CONSTRUCTEUR de station
-        :param inputName: nom de la station
+        param inputName: nom de la station
         """
         self._name = inputName
 
@@ -27,6 +27,6 @@ class Station :
     def __eq__(self, stationName) :
         """
         Surcharge de l'operateur ==
-        :param stationName: nom de la station a comparer
+        param stationName: nom de la station a comparer
         """
         return self._name == stationName

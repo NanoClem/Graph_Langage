@@ -17,7 +17,7 @@ class Bus :
         """
         self._num        = id
         self._stations   = stationList
-        self._terminus   = None              # definir selon le sens
+        self._terminus   = self._stations[-1]
 
 
     def getNum(self) :
@@ -31,9 +31,23 @@ class Bus :
     def getStations(self) :
         """
         Retourne les arrets sur le trajet du bus
-        :return: liste des arrets
+        return: liste des arrets
+        return type : list[] Station
         """
         return self._stations
+
+
+    def getStationsName(self) :
+        """
+        Retourne les noms des arrets
+        return : liste des noms des arrets
+        return type : list[] str
+        """
+        names = []
+        for sts in self._stations :
+            names.append(sts.getName())
+            
+        return names
 
 
     def getNbStations(self) :
@@ -67,3 +81,4 @@ class Bus :
         print("Bus numero " + str(self._num) + " :")
         for i in range(len(self._stations)) :
             print(self._stations[i].getName())
+        print('\n')

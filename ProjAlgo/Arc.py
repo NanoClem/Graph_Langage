@@ -49,7 +49,5 @@ class Arc :
         """
         Affiche le trajet entre les deux arrets
         """
-        nameBegin = self.begin.getName()
-        nameEnd   = self.end.getName()
-        print("arret depart : " + nameBegin)
-        print("arret suivant : " + nameEnd)
+        print("arret depart : " + self.begin.getName())
+        print("arret suivant : " + self.end.getName())

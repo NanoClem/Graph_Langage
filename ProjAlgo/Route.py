@@ -22,6 +22,14 @@ class Route :
         self.route = []
 
 
+    def getBus(self) :
+        """
+        Retourne le bus concerne par le trajet
+        return : bus effectuant cette route
+        """
+        return self.bus
+
+
     def buildRoute(self, direction = True) :
         """
         Construit la route du bus en fonction du sens du trajet
@@ -39,11 +47,12 @@ class Route :
 
     def printRoute(self) :
         """
-        Affiche la route
+        Affiche la route du bus
         """
         #ARRETS SUR LE TRAJET
-        print("ROUTE BUS " + str(self.bus.getNum()))
+        print("ROUTE LIGNE " + str(self.bus.getNum()))
         for i in range(len(self.route)) :
             self.route[i].printArc()
         #TERMINUS
         print("TERMINUS : " + self.bus.getTerminus().getName())
+        print('\n')
