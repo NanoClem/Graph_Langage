@@ -40,7 +40,6 @@ class BusNetwork :
         return hashmap
 
 
-
     def getSameStations(self, route1, route2) :
         """
         Retourne le ou les arrets en commun entre deux routes
@@ -49,3 +48,11 @@ class BusNetwork :
         bus1, bus2 = route1.getBus(), route2.getBus()
         sts1, sts2 = set(bus1.getStationsName()), set(bus2.getStationsName())
         return list(sts1 & sts2)
+
+
+    def getConnections(self) :
+        """
+        Retourne tous les chemins du reseau
+        return : liste des arcs du graphe
+        """
+        return self.connections
