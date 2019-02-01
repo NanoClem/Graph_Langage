@@ -2,6 +2,9 @@
 creator : decoopmc
 """
 
+from collections import OrderedDict
+
+
 class BusNetwork :
     """
     Cette classe modelise le reseau des bus
@@ -14,8 +17,28 @@ class BusNetwork :
         """
         CONSTRUCTEUR du reseau des bus
         param new_routes : liste des noeuds du graphe
+        attribute network : noeuds du graphe
+        attribute connections : liste des arcs entre les noeuds
         """
-        self.network = new_routes
+        self.network     = new_routes
+        self.connections = self.prepConnections(self.network)
+
+
+    def prepConnections(self, nodes) :
+        """
+        Regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
+        avec la paire cle/valeur : (id du bus, arc sur sa route)
+        Ainsi, on peut savoir ou se situe un arc
+        param nodes : liste des routes
+        return : hashmap paire cle/valeur : (id du bus, arc sur sa route)
+        """
+        hashmap = OrderedDict()     #table de hashage
+        for net in self.network :
+            for way in net.getRoute() :
+                hashmap[net.getBus().getNum()] = way
+
+        return hashmap
+
 
 
     def getSameStations(self, route1, route2) :
