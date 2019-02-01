@@ -2,7 +2,6 @@
 creator : decoopmc
 """
 
-
 class BusNetwork :
     """
     Cette classe modelise le reseau des bus
@@ -19,7 +18,7 @@ class BusNetwork :
         self.network = new_routes
 
 
-    def getSameStations(route1, route2) :
+    def getSameStations(self, route1, route2) :
         """
         Retourne le ou les arrets en commun entre deux routes
         return : liste des arrets en commun
