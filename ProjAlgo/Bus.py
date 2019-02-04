@@ -46,7 +46,7 @@ class Bus :
         names = []
         for sts in self._stations :
             names.append(sts.getName())
-            
+
         return names
 
 

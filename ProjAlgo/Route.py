@@ -19,7 +19,7 @@ class Route :
         attribute ways: liste des chemins (arcs) de la route
         """
         self.bus   = new_bus
-        self.ways = []
+        self.ways  = []
 
 
     def getBus(self) :
@@ -41,7 +41,7 @@ class Route :
     def buildRoute(self, direction = True) :
         """
         Construit la route du bus en fonction du sens du trajet
-        :param direction: sens du trajet du bus
+        param direction: sens du trajet du bus
         """
         stopBus = self.bus.getStations()                # liste des arrets du bus
 
@@ -50,7 +50,7 @@ class Route :
 
         for i in range(len(stopBus)-1) :
             new_arc = Arc(stopBus[i], stopBus[i+1])     # nouveau chemin entre deux arrets
-            self.ways.append(new_arc)                  # ajout du chemin au trajet du bus
+            self.ways.append(new_arc)                   # ajout du chemin au trajet du bus
 
 
     def printRoute(self) :

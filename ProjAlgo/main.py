@@ -68,7 +68,8 @@ def main() :
     #============================================================
     #   TEST 3 : Reseau des bus
     #============================================================
-    print("ARRETS EN COMMUN : ", sameSts)
+    print("ARRETS EN COMMUN : ", sameSts)   # arrets en commun entre chaque route de bus
+    print("ARRETS DU RESEAU : ", SibraNetwork.getAllStations())
 
 
 if __name__ == '__main__':

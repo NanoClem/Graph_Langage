@@ -40,6 +40,27 @@ class BusNetwork :
         return hashmap
 
 
+    def getAllStations(self) :
+        """
+        Retourne la liste de tous les arrets du reseau sans doublons
+        return : liste de tous les arrets du graphe sans doublons
+        """
+        ret = []
+        for net in self.network :
+            for sts in net.getBus().getStations() :
+                ret.append(sts.getName())
+
+        return list(set(ret))   #creer un ensemble retire les doublons
+
+
+    def getConnections(self) :
+        """
+        Retourne tous les chemins du reseau
+        return : liste des arcs du graphe
+        """
+        return self.connections
+
+
     def getSameStations(self, route1, route2) :
         """
         Retourne le ou les arrets en commun entre deux routes
@@ -50,9 +71,7 @@ class BusNetwork :
         return list(sts1 & sts2)
 
 
-    def getConnections(self) :
+    def ShortestArc(self, begin, end) :
         """
-        Retourne tous les chemins du reseau
-        return : liste des arcs du graphe
         """
-        return self.connections
+        pass

@@ -9,22 +9,22 @@ class Arc :
     Elle contient l'arret de depart et celui d'arrive
     """
 
-    def __init__(self, startStation, endStation) :
+    def __init__(self, startStation, endStation, mydist = None) :
         """
         CONSTRUCTEUR
-        :param startStation: arret de depart
-        :param endStation: station d'arrive
-        :param time: temps theorique en minutes mis par le bus entre chaque arret
+        param startStation: arret de depart
+        param endStation: station d'arrive
+        param dist: distance entre l'arret de depart et celui d'arrivee
         """
         self.begin = startStation
         self.end   = endStation
-        self.time  = None           # pas encore teste
+        self.dist  = mydist          # temps, distance(nb arcs, km, ...)
 
 
     def getBegin(self) :
         """
         Retourne la station de depart
-        :return: station de depart
+        return: station de depart
         """
         return self.begin
 
@@ -32,17 +32,24 @@ class Arc :
     def getEnd(self) :
         """
         Retourne la station d'arrive
-        :return: station d'arrive
+        return: station d'arrive
         """
         return self.end
 
 
-    def getTime(self) :
+    def getDist(self) :
         """
-        Retourne le temps en minutes entre deux arrets
-        :return: temps entre deux arrets
+        Retourne la distance (min, km, nbArcs) entre deux arrets
+        return: distance entre deux arrets
         """
-        return self.time
+        return self.dist
+
+
+    def setDist(self, new_dist) :
+        """
+        Renseigne la distance
+        """
+        self.dist = new_dist
 
 
     def printArc(self) :
