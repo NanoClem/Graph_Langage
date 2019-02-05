@@ -24,9 +24,16 @@ class Station :
         return self._name
 
 
-    def __eq__(self, stationName) :
+    def __eq__(self, sts) :
         """
         Surcharge de l'operateur ==
         param stationName: nom de la station a comparer
         """
-        return self._name == stationName
+        return self._name == sts.getName()
+
+
+    def __str__(self) :
+        """
+        Surcharge pour l'affichage en print
+        """
+        return self.getName()
