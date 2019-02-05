@@ -9,30 +9,32 @@ class Arc :
     Elle contient l'arret de depart et celui d'arrive
     """
 
-    def __init__(self, startStation, endStation, mydist = None) :
+    def __init__(self, startStation, endStation, mydist = 1) :
         """
         CONSTRUCTEUR
         param startStation: arret de depart
-        param endStation: station d'arrive
-        param dist: distance entre l'arret de depart et celui d'arrivee
+        param endStation: arret d'arrive
+        param mydist: distance entre l'arret de depart et celui d'arrivee, egal a 1 par defaut
         """
         self.begin = startStation
         self.end   = endStation
-        self.dist  = mydist          # temps, distance(nb arcs, km, ...)
+        self.dist  = mydist          # poids : temps(min), distance(km, ...)
 
 
     def getBegin(self) :
         """
-        Retourne la station de depart
-        return: station de depart
+        Retourne l'arret de depart
+        return: arret de depart
+        return type : Station
         """
         return self.begin
 
 
     def getEnd(self) :
         """
-        Retourne la station d'arrive
-        return: station d'arrive
+        Retourne l'arret d'arrive
+        return: l'arret d'arrive
+        return type : Station
         """
         return self.end
 
@@ -52,9 +54,9 @@ class Arc :
         self.dist = new_dist
 
 
-    def printArc(self) :
+    def __str__(self) :
         """
-        Affiche le trajet entre les deux arrets
+        Surcharge pour l'affichage de l'arc
+        Affiche le trajet entre deux arret lies
         """
-        print("arret depart : " + self.begin.getName())
-        print("arret suivant : " + self.end.getName())
+        return self.begin.getName() + " --> " + self.end.getName()

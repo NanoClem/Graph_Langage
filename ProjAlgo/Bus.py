@@ -80,5 +80,5 @@ class Bus :
         """
         print("Bus numero " + str(self._num) + " :")
         for i in range(len(self._stations)) :
-            print(self._stations[i].getName())
+            print(self._stations[i])
         print('\n')

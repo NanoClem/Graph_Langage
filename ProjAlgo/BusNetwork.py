@@ -21,21 +21,25 @@ class BusNetwork :
         attribute connections : liste des arcs entre les noeuds
         """
         self.network     = new_routes
-        self.connections = self.prepConnections(self.network)
+        self.connections = self._prepConnections(self.network)
 
 
-    def prepConnections(self, nodes) :
+    def _prepConnections(self, nodes) :
         """
-        Regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
-        avec la paire cle/valeur : (id du bus, arc sur sa route)
+        Methode privee qui regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
+        PAIRE KEY/VALUE : key = tuple(ArcNum,BusID)  value = Arc
         Ainsi, on peut savoir ou se situe un arc
         param nodes : liste des routes
-        return : hashmap paire cle/valeur : (id du bus, arc sur sa route)
+        return : hashmap key/value = tuple(ArcNum,BusID) / Arc
+        return type : OrderedDict
         """
         hashmap = OrderedDict()     #table de hashage
         for net in self.network :
+            cpt = 0
             for way in net.getRoute() :
-                hashmap[net.getBus().getNum()] = way
+                mykey = (cpt, net.getBus().getNum())
+                hashmap[mykey] = way
+                cpt += 1
 
         return hashmap
 
@@ -61,17 +65,71 @@ class BusNetwork :
         return self.connections
 
 
+    def printConnections(self) :
+        """
+        Affiche les trajets entre les arrets du reseau ainsi que la ligne de bus associee
+        """
+        for key,value in self.connections.items() :
+            print("Ligne bus " + str(key[1]), value)
+
+
     def getSameStations(self, route1, route2) :
         """
         Retourne le ou les arrets en commun entre deux routes
         return : liste des arrets en commun
         """
         bus1, bus2 = route1.getBus(), route2.getBus()
-        sts1, sts2 = set(bus1.getStationsName()), set(bus2.getStationsName())
-        return list(sts1 & sts2)
+        sts1, sts2 = set(bus1.getStationsName()), set(bus2.getStationsName())   #creation des conteneurs ensembles
+        return list(sts1 & sts2)    #intersection entre deux ensembles sur les arrets
 
 
-    def ShortestArc(self, begin, end) :
+    def _getNeighbour(self, sts) :
         """
+        Methode privee qui retourne les voisins d'un arret passe en parametres
+        a partir des arcs auquels ils sont relies
+        param sts : arret dont on cherche les voisins
+        return : OrderedDict des voisins de l'arret
+        return type : OrderedDict() [key=int:busID, value=Station:neighbourSTS:]
         """
-        pass
+        ret = OrderedDict()
+        for key, value in self.getConnections().items() :
+            if value.getBegin() == sts :  #trouver un voisin : matcher l'arret recherche avec un arret de depart dans un arc
+                ret[key] = value.getEnd()
+
+        return ret
+
+
+    def _printNeighbour(self, sts) :
+        """
+        METHODE PRIVEE DE TEST
+        Affiche les voisins d'un arret
+        param sts : arret dont on cherche les voisins
+        param neighbour : OrderedDict des voisins de l'arret
+        """
+        neighbour = self._getNeighbour(sts)    #voisins de l'arret
+        for key,value in neighbour.items() :
+            print("Ligne Bus " + str(key[1]), "ARRETS VOISINS :", value)
+
+
+    def Dijkstra(self, begin, end) :
+        """
+        Calcule le chemin le plus court d'un arret a un autre
+        param begin : arret de depart
+        param end : arret d'arrivee
+        return : liste des arrets du chemin le plus court
+        """
+        #BUG : node2visit retourne une liste vide "None"
+        node2visit  = self.getAllStations().remove(begin.getName())  #liste des noeuds a visiter
+        dist        = self.getConnections()                          #liste des arcs contenant la distance entre les noeuds
+        currentNode = begin
+
+
+        while currentNode != end :
+            neighbour = self._getNeighbour(currentNode)  #voisins du noeud courrant
+            #traitement...
+            #node2visit = node2visit.remove(currentNode.getName())
+            break;
+
+        #TEST : recuperer et afficher les voisins d'un noeud
+        # self.printConnections()
+        # self._printNeighbour(currentNode)

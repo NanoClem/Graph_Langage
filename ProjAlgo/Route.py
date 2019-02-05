@@ -60,7 +60,7 @@ class Route :
         #ARRETS SUR LE TRAJET
         print("ROUTE LIGNE " + str(self.bus.getNum()))
         for i in range(len(self.ways)) :
-            self.ways[i].printArc()
+            print(self.ways[i])
         #TERMINUS
         print("TERMINUS : " + self.bus.getTerminus().getName())
         print('\n')

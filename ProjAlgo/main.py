@@ -51,8 +51,6 @@ def main() :
 
     # RESEAU DES BUS
     SibraNetwork = BusNetwork([pathSibra1, pathSibra2])
-    sameSts      = SibraNetwork.getSameStations(pathSibra1, pathSibra2)    # liste des arrets en commun
-
     #============================================================
     #   TEST 1 : Bus et ses arrets
     #============================================================
@@ -68,8 +66,18 @@ def main() :
     #============================================================
     #   TEST 3 : Reseau des bus
     #============================================================
-    print("ARRETS EN COMMUN : ", sameSts)   # arrets en commun entre chaque route de bus
-    print("ARRETS DU RESEAU : ", SibraNetwork.getAllStations())
+    #sameSts    = SibraNetwork.getSameStations(pathSibra1, pathSibra2)    # liste des arrets en commun
+    #print("ARRETS EN COMMUN : ", sameSts)   # arrets en commun entre chaque route de bus
+    #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStations())
+    #SibraNetwork.printConnections() #affichage des trajet entre les arrets du reseau
+
+    #============================================================
+    #   TEST 4 : Plus court chemin
+    #============================================================
+    start       = "Chorus" #input("Saisir l'arret de depart : ")
+    destination = "Ponchy" #input("Saisir votre destination : ")
+    print('\n')
+    SibraNetwork.Dijkstra(Station(start), Station(destination))
 
 
 if __name__ == '__main__':
