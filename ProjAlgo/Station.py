@@ -24,6 +24,14 @@ class Station :
         return self._name
 
 
+    def setName(self, new_name) :
+        """
+        Modifie le nom de l'arret
+        param new_name : nouveau nom de l'arret
+        """
+        self._name = new_name
+
+
     def __eq__(self, sts) :
         """
         Surcharge de l'operateur ==

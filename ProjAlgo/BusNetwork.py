@@ -9,27 +9,26 @@ class BusNetwork :
     """
     Cette classe modelise le reseau des bus
     Elle constitue un graphe des differentes routes (classe Route) en les superposant
-    Autrement dit, un noeud dans ce graphe est represente par une route
-    Une liaison (arc) entre deux noeuds existe s'ils ont au moins un arret en commun
+    Autrement dit, un noeud dans ce graphe correspond a un arret d'une route
+    Une liaison entre deux routes existe si elles ont au moins un arret en commun
     """
 
     def __init__(self, new_routes = []) :
         """
         CONSTRUCTEUR du reseau des bus
-        param new_routes : liste des noeuds du graphe
-        attribute network : noeuds du graphe
+        param new_routes : liste en entree des routes du graphe
+        attribute network : routes du graphe
         attribute connections : liste des arcs entre les noeuds
         """
         self.network     = new_routes
-        self.connections = self._prepConnections(self.network)
+        self.connections = self._prepConnections()
 
 
-    def _prepConnections(self, nodes) :
+    def _prepConnections(self) :
         """
         Methode privee qui regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
         PAIRE KEY/VALUE : key = tuple(ArcNum,BusID)  value = Arc
-        Ainsi, on peut savoir ou se situe un arc
-        param nodes : liste des routes
+        Ainsi, on peut savoir quel arc appartient a telle route
         return : hashmap key/value = tuple(ArcNum,BusID) / Arc
         return type : OrderedDict
         """
@@ -107,6 +106,7 @@ class BusNetwork :
         """
         neighbour = self._getNeighbour(sts)    #voisins de l'arret
         for key,value in neighbour.items() :
+
             print("Ligne Bus " + str(key[1]) + " " + sts.getName(),
                   "ARRETS VOISINS :", value)
 
@@ -118,13 +118,19 @@ class BusNetwork :
         param end : arret d'arrivee
         return : liste des arrets du chemin le plus court
         """
-        print("Vous desirez aller de " + begin.getName() + " jusqu'a " + end.getName())
         node2visit  = self.getAllStations()     #liste des noeuds a visiter
+
+        #TESTER L'EXISTENCE DES ARRETS
+        while begin.getName() not in node2visit or end.getName() not in node2visit :
+            print("Arrets invalides, veuillez reessayer parmis ces derniers :")
+            print(node2visit, '\n')
+            begin.setName(input("Saisir l'arret de depart : "))
+            end.setName(input("Saisir votre destination : "))
+            print('\n')
+
         node2visit.remove(begin.getName())      #on retire le noeud origine de la liste a visiter
-        print(node2visit)
         dist        = self.getConnections()     #liste des arcs contenant la distance entre les noeuds
         currentNode = begin
-
 
         while currentNode != end :
             neighbour = self._getNeighbour(currentNode)  #voisins du noeud courrant
@@ -134,4 +140,4 @@ class BusNetwork :
 
         #TEST : recuperer et afficher les voisins d'un noeud
         #self.printConnections()
-        #self._printNeighbour(currentNode)
+        self._printNeighbour(currentNode)

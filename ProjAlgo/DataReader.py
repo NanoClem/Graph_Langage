@@ -8,8 +8,8 @@ class DataReader :
     Cette classe a pour but de lire les diffentes donnees des lignes de bus
     dans un fichier texte
     Les donnees recuperees sont :
-        - les noms des arrets
-        - les horaires des bus (normales, nuit, vacances, dimanche et feries)
+        les noms des arrets
+        les horaires des bus (normales, nuit, vacances, dimanche et feries)
     """
 
     def __init__(self) :
@@ -52,7 +52,7 @@ class DataReader :
         return self._content.split("\n\n")
 
 
-    def readStations(self) :
+    def readStationsName(self) :
         """
         Retourne le nom des differents arrets lus dans le fichier
         return : liste des noms des arrets

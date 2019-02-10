@@ -34,11 +34,11 @@ def main() :
     # BUS
     #LIGNE 1
     reader.setReader(ligne1)                      # injection du fichier pour la lecture
-    stations1 = reader.readStations()             # lecture du nom des arrets de la ligne 1
+    stations1 = reader.readStationsName()         # lecture du nom des arrets de la ligne 1
     Sibra1    = Bus(1, createStations(stations1)) # nouvel objet Bus
     #LIGNE2
     reader.setReader(ligne2)
-    stations2 = reader.readStations()
+    stations2 = reader.readStationsName()
     Sibra2    = Bus(2, createStations(stations2))
 
     # ROUTE DES BUS
@@ -74,7 +74,7 @@ def main() :
     #============================================================
     #   TEST 4 : Plus court chemin
     #============================================================
-    start       = "Chorus" #input("Saisir l'arret de depart : ")
+    start       = "VIGNIERES" #input("Saisir l'arret de depart : ")
     destination = "Ponchy" #input("Saisir votre destination : ")
     SibraNetwork.Dijkstra(Station(start), Station(destination))
 
