@@ -76,7 +76,6 @@ def main() :
     #============================================================
     start       = "Chorus" #input("Saisir l'arret de depart : ")
     destination = "Ponchy" #input("Saisir votre destination : ")
-    print('\n')
     SibraNetwork.Dijkstra(Station(start), Station(destination))
 
 

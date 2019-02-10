@@ -34,8 +34,8 @@ class BusNetwork :
         return type : OrderedDict
         """
         hashmap = OrderedDict()     #table de hashage
+        cpt = 0                     #compteur ArcNum du tuple(ArcNum,BusID)
         for net in self.network :
-            cpt = 0
             for way in net.getRoute() :
                 mykey = (cpt, net.getBus().getNum())
                 hashmap[mykey] = way
@@ -104,11 +104,11 @@ class BusNetwork :
         METHODE PRIVEE DE TEST
         Affiche les voisins d'un arret
         param sts : arret dont on cherche les voisins
-        param neighbour : OrderedDict des voisins de l'arret
         """
         neighbour = self._getNeighbour(sts)    #voisins de l'arret
         for key,value in neighbour.items() :
-            print("Ligne Bus " + str(key[1]), "ARRETS VOISINS :", value)
+            print("Ligne Bus " + str(key[1]) + " " + sts.getName(),
+                  "ARRETS VOISINS :", value)
 
 
     def Dijkstra(self, begin, end) :
@@ -118,9 +118,11 @@ class BusNetwork :
         param end : arret d'arrivee
         return : liste des arrets du chemin le plus court
         """
-        #BUG : node2visit retourne une liste vide "None"
-        node2visit  = self.getAllStations().remove(begin.getName())  #liste des noeuds a visiter
-        dist        = self.getConnections()                          #liste des arcs contenant la distance entre les noeuds
+        print("Vous desirez aller de " + begin.getName() + " jusqu'a " + end.getName())
+        node2visit  = self.getAllStations()     #liste des noeuds a visiter
+        node2visit.remove(begin.getName())      #on retire le noeud origine de la liste a visiter
+        print(node2visit)
+        dist        = self.getConnections()     #liste des arcs contenant la distance entre les noeuds
         currentNode = begin
 
 
@@ -131,5 +133,5 @@ class BusNetwork :
             break;
 
         #TEST : recuperer et afficher les voisins d'un noeud
-        # self.printConnections()
-        # self._printNeighbour(currentNode)
+        #self.printConnections()
+        #self._printNeighbour(currentNode)
