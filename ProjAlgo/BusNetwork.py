@@ -128,6 +128,7 @@ class BusNetwork :
             end.setName(input("Saisir votre destination : "))
             print('\n')
 
+        #BEWARE : node2visit recup objet noeud, pas le nom
         node2visit.remove(begin.getName())      #on retire le noeud origine de la liste a visiter
         dist        = self.getConnections()     #liste des arcs contenant la distance entre les noeuds
         currentNode = begin
