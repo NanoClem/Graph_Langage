@@ -17,7 +17,7 @@ def createStations(names) :
     """
     stationsBus = []
     for i in range(len(names)) :
-        new_station = Station(names[i])
+        new_station = Station(names[i], i)
         stationsBus.append(new_station)
 
     return stationsBus
@@ -68,15 +68,22 @@ def main() :
     #============================================================
     #sameSts    = SibraNetwork.getSameStations(pathSibra1, pathSibra2)    # liste des arrets en commun
     #print("ARRETS EN COMMUN : ", sameSts)   # arrets en commun entre chaque route de bus
-    #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStations())
+    #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStationsName())
     #SibraNetwork.printConnections() #affichage des trajet entre les arrets du reseau
 
     #============================================================
     #   TEST 4 : Plus court chemin
     #============================================================
-    start       = "VIGNIERES" #input("Saisir l'arret de depart : ")
-    destination = "Ponchy" #input("Saisir votre destination : ")
-    SibraNetwork.Dijkstra(Station(start), Station(destination))
+    start               = Station(input("Saisir l'arret de depart : "))
+    destination         = Station(input("Saisir votre destination : "))
+    startID, destID     = SibraNetwork.findStsID(start), SibraNetwork.findStsID(destination)
+
+    start.setID(startID)
+    destination.setID(destID)
+
+    print("CHEMIN LE PLUS COURT :")
+    print(SibraNetwork.Dijkstra(start, destination)[0])
+
 
 
 if __name__ == '__main__':
