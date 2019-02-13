@@ -4,6 +4,8 @@ creator : decoopmc
 
 from collections import OrderedDict
 import math
+from Arc import Arc
+from Station import Station
 
 
 class BusNetwork :
@@ -110,6 +112,24 @@ class BusNetwork :
         return ret
 
 
+    def _getCurrentArc(self, currentNode = None, neighbour = None):
+        """
+        TEMPORAIRE :
+        Retourne un arc 'bouchon' avec un poids de 1 pour les tests
+
+        Trouve l'arc associé au noeud courrant et son voisin passes
+        en parametre, et le retourne
+        PARAM currentNode : noeud courrant
+        PARAM neighbour : voisin du noeud courrant
+        PARAMS TYPE : Station
+        RETURN : arc liant currentNode et neighbour
+        RETURN TYPE : Arc
+        """
+        #POUR LES TESTS
+        arcTest = Arc(Station("depart"), Station("arrivee"))
+        return arcTest
+
+
     def findStsID(self, sts) :
         """
         Retourne l'id de l'arret du reseau passe en parametre
@@ -121,7 +141,7 @@ class BusNetwork :
             print("Arret demande inconnu")
             return ret
         else :
-            for s in self.getAllStations() :
+            for s in self.getAllStations() :    #sans risque de doublons puisque getAllStations() les retire deja
                 if s == sts :
                     ret = s.getId()
                     break
@@ -181,11 +201,11 @@ class BusNetwork :
 
         while current != end :
             #TODO : trouver un moyen de faire une liste de tous les voisins
-            neighbour += self._getNeighbour(current)  #voisins du noeud courrant
-            node2visit.remove(current)
+            neighbour = self._getNeighbour(current)  #voisins du noeud courrant
+            node2visit.remove(current)               #le noeud courrant n'est plus a visiter
             #traitement...
             for key,value in neighbour.items() :
-                arcValue    = 1     #TODO : recuperer la valeur du bon arc
+                arcValue    = self._getCurrentArc().getDist() #TODO : implementer _getCurrentArc()
                 valueDist   = dist[self.findStsID(value)]     #distance du noeud en traitement
                 currentDist = dist[self.findStsID(current)]   #distance du noeud courrant
 
@@ -195,8 +215,7 @@ class BusNetwork :
                     current = value                     #BUG : on saute l'arret courrant a rechercher
                     print("ARRET SUIVANT :", value)
 
-            #recherche du nouveau courrant
-
+            #recherche du nouveau courrant ici
 
         print(node2visit)
         return dist, childs
