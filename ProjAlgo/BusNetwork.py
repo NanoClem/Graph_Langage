@@ -112,6 +112,23 @@ class BusNetwork :
         return ret
 
 
+    def _getIntersect(self, nodes1 = [], nodes2 = []) :
+        """
+        Compare deux listes de noeuds et retourne leur intersection
+        Cette fonction se substitue aux ensembles de python (set) pour les types non hashables
+        PARAM nodes1, nodes2 : listes de noeuds a comparer
+        RETURN : liste contenant les elements en commun des deux listes
+        RETURN TYPE : list[] Station
+        """
+        ret = []
+        for sts in nodes1 :
+            for s in nodes2 :
+                if sts == s and sts not in ret :
+                    ret.append(sts)
+
+        return ret
+
+
     def _getCurrentArc(self, currentNode = None, neighbour = None):
         """
         TEMPORAIRE :
@@ -128,6 +145,27 @@ class BusNetwork :
         #POUR LES TESTS
         arcTest = Arc(Station("depart"), Station("arrivee"))
         return arcTest
+
+
+    def _getNodeMinDist(self, distList = [], nodesToVisit = []) :
+        """
+        Cherche et retourne le noeud qui a la plus petite distance
+        parmi la liste des distances à partir de la liste des noeuds à visiter
+        PARAM distList : liste des distances
+        PARAM nodesToVisit : liste des noeuds a visiter
+        RETURN : noeud qui a la plus petite distance
+        RETURN TYPE : Station
+        """
+        ret = None
+        min = math.inf      #distance minimale initialisee a +infini
+        for sts in nodesToVisit :
+            currentDist = distList[self.findStsID(sts)]  #distance du noeud a traiter
+            if currentDist < min :
+                ret = sts
+                min = distList[self.findStsID(ret)]      #nouvelle distance minimale
+
+        return ret
+
 
 
     def findStsID(self, sts) :
@@ -195,31 +233,25 @@ class BusNetwork :
             end.setName(input("Saisir votre destination : "))
             print('\n')
 
+        current                     = begin   #initialisation du noeud courrant
         dist[self.findStsID(begin)] = 0       #distance au noeud origine initialisee a 0
-        current                     = begin   #le noeud courrant est initialise au noeud de depart
         neighbour                   = {}      #dictionnaire des voisins des noeuds
 
         while current != end :
-            #TODO : trouver un moyen de faire une liste de tous les voisins
-            neighbour = self._getNeighbour(current)  #voisins du noeud courrant
-            node2visit.remove(current)               #le noeud courrant n'est plus a visiter
-            #traitement...
-            for key,value in neighbour.items() :
+            current   = self._getNodeMinDist(dist, node2visit) #recherche du nouveau noeud courrant
+            neighbour = self._getNeighbour(current)            #voisins du noeud courrant
+            node2visit.remove(current)                         #le noeud courrant n'est plus a visiter
+
+            #TRAITEMENT...
+            commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
+            for sts in commons :
                 arcValue    = self._getCurrentArc().getDist() #TODO : implementer _getCurrentArc()
-                valueDist   = dist[self.findStsID(value)]     #distance du noeud en traitement
+                valueDist   = dist[self.findStsID(sts)]       #distance du noeud en traitement
                 currentDist = dist[self.findStsID(current)]   #distance du noeud courrant
 
                 if valueDist > currentDist + arcValue :
-                    dist[self.findStsID(value)] = currentDist + arcValue
-                    childs.append(value)
-                    current = value                     #BUG : on saute l'arret courrant a rechercher
-                    print("ARRET SUIVANT :", value)
+                    dist[self.findStsID(sts)] = currentDist + arcValue
+                    childs.append(sts.getName())
+                    print("ARRET SUIVANT :", sts)
 
-            #recherche du nouveau courrant ici
-
-        print(node2visit)
         return dist, childs
-
-        #TEST : recuperer et afficher les voisins d'un noeud
-        #self.printConnections()
-        #self._printNeighbour(current)

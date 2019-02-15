@@ -82,7 +82,7 @@ def main() :
     destination.setID(destID)
 
     print("CHEMIN LE PLUS COURT :")
-    print(SibraNetwork.Dijkstra(start, destination)[0])
+    print(SibraNetwork.Dijkstra(start, destination)[1])
 
 
 
