@@ -159,16 +159,16 @@ class BusNetwork :
         ret = None
         min = math.inf      #distance minimale initialisee a +infini
         for sts in nodesToVisit :
-            currentDist = distList[self.findStsID(sts)]  #distance du noeud a traiter
+            currentDist = distList[self.findStsIndex(sts)]  #distance du noeud a traiter
             if currentDist < min :
                 ret = sts
-                min = distList[self.findStsID(ret)]      #nouvelle distance minimale
+                min = distList[self.findStsIndex(ret)]      #nouvelle distance minimale
 
         return ret
 
 
 
-    def findStsID(self, sts) :
+    def findStsIndex(self, sts) :
         """
         Retourne l'id de l'arret du reseau passe en parametre
         Si l'arret demande n'existe pas, retourne None
@@ -234,7 +234,7 @@ class BusNetwork :
             print('\n')
 
         current                     = begin   #initialisation du noeud courrant
-        dist[self.findStsID(begin)] = 0       #distance au noeud origine initialisee a 0
+        dist[self.findStsIndex(begin)] = 0       #distance au noeud origine initialisee a 0
         neighbour                   = {}      #dictionnaire des voisins des noeuds
 
         while current != end :
@@ -246,11 +246,11 @@ class BusNetwork :
             commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
             for sts in commons :
                 arcValue    = self._getCurrentArc().getDist() #TODO : implementer _getCurrentArc()
-                valueDist   = dist[self.findStsID(sts)]       #distance du noeud en traitement
-                currentDist = dist[self.findStsID(current)]   #distance du noeud courrant
+                valueDist   = dist[self.findStsIndex(sts)]       #distance du noeud en traitement
+                currentDist = dist[self.findStsIndex(current)]   #distance du noeud courrant
 
                 if valueDist > currentDist + arcValue :
-                    dist[self.findStsID(sts)] = currentDist + arcValue
+                    dist[self.findStsIndex(sts)] = currentDist + arcValue
                     childs.append(sts.getName())
                     print("ARRET SUIVANT :", sts)
 

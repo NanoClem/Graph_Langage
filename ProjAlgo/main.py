@@ -76,7 +76,7 @@ def main() :
     #============================================================
     start               = Station(input("Saisir l'arret de depart : "))
     destination         = Station(input("Saisir votre destination : "))
-    startID, destID     = SibraNetwork.findStsID(start), SibraNetwork.findStsID(destination)
+    startID, destID     = SibraNetwork.findStsIndex(start), SibraNetwork.findStsIndex(destination)
 
     start.setID(startID)
     destination.setID(destID)
