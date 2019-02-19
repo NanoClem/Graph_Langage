@@ -220,7 +220,7 @@ class BusNetwork :
             liste des noeud constituant le chemin le plus court
             liste des distances tel que dist[node] = distance de begin a node
         """
-        childs      = []
+        shortWay    = []
         node2visit  = self.getAllStations()                         #liste des noeuds a visiter
         dist        = [math.inf for _ in range(len(node2visit))]    #liste des distances initialise a +infini
         arcs        = self.getConnections()                         #liste des arcs ponderes
@@ -233,25 +233,32 @@ class BusNetwork :
             end.setName(input("Saisir votre destination : "))
             print('\n')
 
-        current                     = begin   #initialisation du noeud courrant
+        #DEBUT DE L'ALGORITHME
+        current                        = begin   #initialisation du noeud courrant
         dist[self.findStsIndex(begin)] = 0       #distance au noeud origine initialisee a 0
-        neighbour                   = {}      #dictionnaire des voisins des noeuds
+        neighbour                      = {}      #dictionnaire des voisins des noeuds
 
         while current != end :
             current   = self._getNodeMinDist(dist, node2visit) #recherche du nouveau noeud courrant
             neighbour = self._getNeighbour(current)            #voisins du noeud courrant
             node2visit.remove(current)                         #le noeud courrant n'est plus a visiter
-
             #TRAITEMENT...
             commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
+
+            #BUG : l'algo parcours en largeur les voisins, liste des voisins bug ?
+            # if neighbour.values() == None :
+            #     print("LISTE VOISINS VIDE")
+            # else :
+            #     for s in neighbour.values() : print("VOISINS :", s.getName())
+
             for sts in commons :
-                arcValue    = self._getCurrentArc().getDist() #TODO : implementer _getCurrentArc()
+                arcValue    = self._getCurrentArc(current, sts).getDist() #TODO : implementer _getCurrentArc()
                 valueDist   = dist[self.findStsIndex(sts)]       #distance du noeud en traitement
                 currentDist = dist[self.findStsIndex(current)]   #distance du noeud courrant
 
                 if valueDist > currentDist + arcValue :
                     dist[self.findStsIndex(sts)] = currentDist + arcValue
-                    childs.append(sts.getName())
+                    shortWay.append(sts.getName())
                     print("ARRET SUIVANT :", sts)
 
-        return dist, childs
+        return dist, shortWay
