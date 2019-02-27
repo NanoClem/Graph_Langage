@@ -20,7 +20,7 @@ class BusNetwork :
         """
         CONSTRUCTEUR du reseau des bus
         param new_routes : liste en entree des routes du graphe
-        attribute network : routes du graphe
+        attribute network : liste des routes du graphe
         attribute connections : liste des arcs entre les noeuds
         """
         self.network     = new_routes
@@ -44,6 +44,47 @@ class BusNetwork :
                 cpt += 1
 
         return hashmap
+
+
+    def exists(self, sts) :
+        """
+        Verifie l'existence d'un arret de bus dans le reseau
+
+        PARAM sts : arret dont on veut tester l'existance
+        RETURN : vrai s'il existe, faux sinon
+        RETURN TYPE : boolean
+        """
+        if sts in self.getAllStations() :
+            return True
+
+        return False
+
+
+    def existsByName(self, stsName) :
+        """
+        Verifie l'existence d'un arret de bus par son nom dans le reseau
+
+        PARAM stsName : nom de l'arret dont on veut tester l'existence
+        RETURN : vrai s'il existe, faux sinon
+        RETURN TYPE : boolean
+        """
+        if stsName in self.getAllStationsName() :
+            return True
+
+        return False
+
+
+    def getStation(self, name) :
+        """
+        Retourne l'arret correspondant au nom passe en parametre
+        """
+        ret = None
+        for sts in self.getAllStations() :
+            if sts.getName() == name :
+                ret = sts
+                break
+
+        return ret
 
 
     def getAllStations(self) :
@@ -96,6 +137,7 @@ class BusNetwork :
         return list(sts1 & sts2)    #intersection entre deux ensembles sur les arrets
 
 
+    #VERRIFIER BUGS : vérifier si key n'est pas la même pour plusieurs valeurs (ecrasage de value)
     def _getNeighbour(self, sts) :
         """
         Methode privee qui retourne les voisins d'un arret passe en parametres
@@ -114,7 +156,7 @@ class BusNetwork :
 
     def _getIntersect(self, nodes1 = [], nodes2 = []) :
         """
-        Compare deux listes de noeuds et retourne leur intersection
+        Retourne l'intersection de deux listes
         Cette fonction se substitue aux ensembles de python (set) pour les types non hashables
         PARAM nodes1, nodes2 : listes de noeuds a comparer
         RETURN : liste contenant les elements en commun des deux listes
@@ -225,13 +267,6 @@ class BusNetwork :
         dist        = [math.inf for _ in range(len(node2visit))]    #liste des distances initialise a +infini
         arcs        = self.getConnections()                         #liste des arcs ponderes
 
-        #TESTER L'EXISTENCE DES ARRETS
-        while begin not in node2visit or end not in node2visit :
-            print("Arrets invalides, veuillez reessayer parmis ces derniers :")
-            print(self.getAllStationsName(), '\n')
-            begin.setName(input("Saisir l'arret de depart : "))
-            end.setName(input("Saisir votre destination : "))
-            print('\n')
 
         #DEBUT DE L'ALGORITHME
         current                        = begin   #initialisation du noeud courrant
@@ -243,7 +278,7 @@ class BusNetwork :
             neighbour = self._getNeighbour(current)            #voisins du noeud courrant
             node2visit.remove(current)                         #le noeud courrant n'est plus a visiter
             #TRAITEMENT...
-            commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
+            #commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
 
             #BUG : l'algo parcours en largeur les voisins, liste des voisins bug ?
             # if neighbour.values() == None :
@@ -251,14 +286,14 @@ class BusNetwork :
             # else :
             #     for s in neighbour.values() : print("VOISINS :", s.getName())
 
-            for sts in commons :
-                arcValue    = self._getCurrentArc(current, sts).getDist() #TODO : implementer _getCurrentArc()
-                valueDist   = dist[self.findStsIndex(sts)]       #distance du noeud en traitement
-                currentDist = dist[self.findStsIndex(current)]   #distance du noeud courrant
-
-                if valueDist > currentDist + arcValue :
-                    dist[self.findStsIndex(sts)] = currentDist + arcValue
-                    shortWay.append(sts.getName())
-                    print("ARRET SUIVANT :", sts)
+            # for sts in commons :
+            #     arcValue    = self._getCurrentArc(current, sts).getDist() #TODO : implementer _getCurrentArc()
+            #     valueDist   = dist[self.findStsIndex(sts)]       #distance du noeud en traitement
+            #     currentDist = dist[self.findStsIndex(current)]   #distance du noeud courrant
+            #
+            #     if valueDist > currentDist + arcValue :
+            #         dist[self.findStsIndex(sts)] = currentDist + arcValue
+            #         shortWay.append(sts.getName())
+            #         print("ARRET SUIVANT :", sts)
 
         return dist, shortWay

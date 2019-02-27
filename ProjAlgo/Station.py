@@ -8,14 +8,15 @@ class Station :
     Cette classe correspond a un arret de bus
     Elle possede un nom
     """
+    num = 0   #Variable statique : id de l'arret
 
-    def __init__(self, inputName, num = None) :
+    def __init__(self, inputName) :
         """
         CONSTRUCTEUR de station
         param inputName: nom de la station
-        parm num : numero de l'arret
         """
-        self.id    = num
+        self.num += 1
+        self.id    = self.num
         self._name = inputName
 
 

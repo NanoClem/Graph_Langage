@@ -12,8 +12,8 @@ class Bus :
     def __init__(self, id, stationList = []) :
         """
         CONSTRUCTEUR de bus
-        :param id: ligne du bus
-        :param stationList: liste des arrets
+        param id: ligne du bus
+        param stationList: liste des arrets
         """
         self._num        = id
         self._stations   = stationList
@@ -23,7 +23,7 @@ class Bus :
     def getNum(self) :
         """
         Recupere le numero de ligne du bus
-        :return: ligne du bus
+        return: ligne du bus
         """
         return self._num
 

@@ -17,10 +17,37 @@ def createStations(names) :
     """
     stationsBus = []
     for i in range(len(names)) :
-        new_station = Station(names[i], i)
+        new_station = Station(names[i])
         stationsBus.append(new_station)
 
     return stationsBus
+
+
+def userInteraction(net) :
+    """
+    Regroupe les gestions de l'utilisateur et ses interactions dans le programme
+    Cela lui permet de choisir les arrets entre lesquels il veut connaitre le chemin le plus court
+    INPUT :
+        param net : reseau de bus sur lequel l'utilisateur se base
+    RETURN :
+        liste des arrets choisis tels que [depart, destination]
+    """
+    inputUser = []
+    options = ["Saisir l'arret de depart : ", "Saisir votre destination : "]
+
+    for i in range(2) :
+        name = input(options[i])
+        while not net.existsByName(name) :
+            print("Cet arret n'existe pas, veuillez reessayer parmis ces derniers :")
+            print(net.getAllStationsName())
+            print('\n')
+            name = input(options[i])
+        inputUser.append(name)
+
+    start           = net.getStation(inputUser[0])
+    destination     = net.getStation(inputUser[1])
+
+    return [start, destination]
 
 
 
@@ -33,7 +60,7 @@ def main() :
 
     # BUS
     #LIGNE 1
-    reader.setReader(ligne1)                      # injection du fichier pour la lecture
+    reader.setReader(ligne1)                      # injection du nom du fichier pour la lecture
     stations1 = reader.readStationsName()         # lecture du nom des arrets de la ligne 1
     Sibra1    = Bus(1, createStations(stations1)) # nouvel objet Bus
     #LIGNE2
@@ -74,15 +101,9 @@ def main() :
     #============================================================
     #   TEST 4 : Plus court chemin
     #============================================================
-    start               = Station(input("Saisir l'arret de depart : "))
-    destination         = Station(input("Saisir votre destination : "))
-    startID, destID     = SibraNetwork.findStsIndex(start), SibraNetwork.findStsIndex(destination)
-
-    start.setID(startID)
-    destination.setID(destID)
-
+    userChoices = userInteraction(SibraNetwork)
     print("CHEMIN LE PLUS COURT :")
-    print(SibraNetwork.Dijkstra(start, destination)[1])
+    print(SibraNetwork.Dijkstra(userChoices[0], userChoices[1])[1])
 
 
 
