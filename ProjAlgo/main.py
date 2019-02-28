@@ -46,7 +46,6 @@ def userInteraction(net) :
 
     start           = net.getStation(inputUser[0])
     destination     = net.getStation(inputUser[1])
-
     return [start, destination]
 
 
@@ -71,10 +70,10 @@ def main() :
     # ROUTE DES BUS
     #SIBRA1
     pathSibra1 = Route(Sibra1)      # construction de la route
-    pathSibra1.buildRoute(True)     # Sens aller
+    pathSibra1.buildRoute()         # Sens aller
     #SIBRA2
     pathSibra2 = Route(Sibra2)
-    pathSibra2.buildRoute(True)
+    pathSibra2.buildRoute()
 
     # RESEAU DES BUS
     SibraNetwork = BusNetwork([pathSibra1, pathSibra2])
@@ -94,16 +93,16 @@ def main() :
     #   TEST 3 : Reseau des bus
     #============================================================
     #sameSts    = SibraNetwork.getSameStations(pathSibra1, pathSibra2)    # liste des arrets en commun
-    #print("ARRETS EN COMMUN : ", sameSts)   # arrets en commun entre chaque route de bus
+    #print("ARRETS EN COMMUN : ", sameSts)                                # arrets en commun entre chaque route de bus
     #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStationsName())
-    #SibraNetwork.printConnections() #affichage des trajet entre les arrets du reseau
+    #SibraNetwork.printConnections()                                      # affichage des trajet entre les arrets du reseau
 
     #============================================================
     #   TEST 4 : Plus court chemin
     #============================================================
     userChoices = userInteraction(SibraNetwork)
-    print("CHEMIN LE PLUS COURT :")
-    print(SibraNetwork.Dijkstra(userChoices[0], userChoices[1])[1])
+    print('\n')
+    SibraNetwork.printShortestWay(userChoices[0], userChoices[1])
 
 
 

@@ -4,8 +4,6 @@ creator : decoopmc
 
 from collections import OrderedDict
 import math
-from Arc import Arc
-from Station import Station
 
 
 class BusNetwork :
@@ -16,15 +14,23 @@ class BusNetwork :
     Une liaison entre deux routes existe si elles ont au moins un arret en commun
     """
 
+
     def __init__(self, new_routes = []) :
         """
         CONSTRUCTEUR du reseau des bus
         param new_routes : liste en entree des routes du graphe
         attribute network : liste des routes du graphe
         attribute connections : liste des arcs entre les noeuds
+        attribute distList : liste des distances par rapport au noeud de depart
+        attribute fathers : dictionnaire des predecesseurs de chaque arret selon le chemin emprunte
+        attribute shortestWay : liste du chemin le plus court
         """
-        self.network     = new_routes
-        self.connections = self._prepConnections()
+        self.network        = new_routes
+        self.connections    = self._prepConnections()
+        self.distList       = []
+        self.fathers        = {}
+        self.shortestWay    = []
+
 
 
     def _prepConnections(self) :
@@ -46,6 +52,7 @@ class BusNetwork :
         return hashmap
 
 
+
     def exists(self, sts) :
         """
         Verifie l'existence d'un arret de bus dans le reseau
@@ -58,6 +65,7 @@ class BusNetwork :
             return True
 
         return False
+
 
 
     def existsByName(self, stsName) :
@@ -74,6 +82,7 @@ class BusNetwork :
         return False
 
 
+
     def getStation(self, name) :
         """
         Retourne l'arret correspondant au nom passe en parametre
@@ -85,6 +94,7 @@ class BusNetwork :
                 break
 
         return ret
+
 
 
     def getAllStations(self) :
@@ -105,6 +115,7 @@ class BusNetwork :
         return ret
 
 
+
     def getAllStationsName(self) :
         """
         Retourne la liste de tous les noms arrets du reseau sans doublons
@@ -119,12 +130,51 @@ class BusNetwork :
         return list(set(ret))   #creer un ensemble retire les doublons
 
 
+
     def getConnections(self) :
         """
         Retourne tous les chemins du reseau
         return : liste des arcs du graphe
         """
         return self.connections
+
+
+
+    def getDistList(self):
+        """
+        Retourne la liste des distances du reseau
+        RETURN : liste des distances
+        """
+        return self.distList
+
+
+
+    def _getFathers(self) :
+        """
+        Retourne les predecesseurs de chaque arret en fonction du parcours
+        effectue par l'algorithme du chemin le plus court
+        RETURN : dictionnaire des predecesseurs
+        RETURN TYPE : Dict(string, string)
+        """
+        return self.fathers
+
+
+
+    def getShortestWay(self, begin, end) :
+        """
+        Calcule le chemin le plus court a partir
+        des resultats de Dijkstra
+        """
+        sts = end
+        self.Dijkstra(begin, end)
+
+        while sts != begin :
+            self.shortestWay.append(sts)
+            sts = self.getStation(self.fathers[sts.getName()])
+
+        self.shortestWay.reverse()
+        return self.shortestWay
+
 
 
     def getSameStations(self, route1, route2) :
@@ -137,7 +187,7 @@ class BusNetwork :
         return list(sts1 & sts2)    #intersection entre deux ensembles sur les arrets
 
 
-    #VERRIFIER BUGS : vérifier si key n'est pas la même pour plusieurs valeurs (ecrasage de value)
+
     def _getNeighbour(self, sts) :
         """
         Methode privee qui retourne les voisins d'un arret passe en parametres
@@ -150,8 +200,11 @@ class BusNetwork :
         for key, value in self.getConnections().items() :
             if value.getBegin() == sts :  #trouver un voisin : matcher l'arret recherche avec un arret de depart dans un arc
                 ret[key] = value.getEnd()
+            elif value.getEnd() == sts :
+                ret[key] = value.getBegin()
 
         return ret
+
 
 
     def _getIntersect(self, nodes1 = [], nodes2 = []) :
@@ -171,25 +224,84 @@ class BusNetwork :
         return ret
 
 
+    #ATTENTION :
+    # Vu que le sens est fait a la main (aller/retour), le dernier arret de la liste (terminus)
+    # n'aura pas de voisin : arc.getEnd() renverra None
     def _getCurrentArc(self, currentNode = None, neighbour = None):
         """
-        TEMPORAIRE :
-        Retourne un arc 'bouchon' avec un poids de 1 pour les tests
-
         Trouve l'arc associé au noeud courrant et son voisin passes
         en parametre, et le retourne
+        Renvoie None si l'arc n'a pas ete trouve
         PARAM currentNode : noeud courrant
         PARAM neighbour : voisin du noeud courrant
         PARAMS TYPE : Station
         RETURN : arc liant currentNode et neighbour
         RETURN TYPE : Arc
         """
-        #POUR LES TESTS
-        arcTest = Arc(Station("depart"), Station("arrivee"))
-        return arcTest
+        ret = None
+        for arc in self.getConnections().values() :
+            sts = [arc.getBegin(), arc.getEnd()]
+            if currentNode in sts and neighbour in sts :
+                ret = arc
+                break
+
+        return ret
 
 
-    def _getNodeMinDist(self, distList = [], nodesToVisit = []) :
+
+    def findStsIndex(self, sts) :
+        """
+        Retourne l'indice de l'arret passe en parametre, comprit dans la liste du reseau
+        Si l'arret demande n'existe pas, retourne None
+        INPUT : arret recherche
+        return type : int
+        """
+        ret    = None
+        allSts = self.getAllStations()  #pas de doublons : getAllStations() les retire
+        if sts not in self.getAllStations() :
+            print("BusNetwork.findStsIndex() : Arret demande inconnu")
+            return ret
+
+        ret = allSts.index(sts)
+        return ret
+
+
+
+    def printConnections(self) :
+        """
+        Affiche les trajets entre les arrets du reseau
+        ainsi que la ligne de bus associee
+        """
+        for key,value in self.connections.items() :
+            print("Ligne bus " + str(key[1]), value)
+
+
+
+    def printShortestWay(self, begin, end) :
+        """
+        Affiche le chemin le plus court d'un
+        parcours effectue au prealable
+        """
+        toPrint = self.getShortestWay(begin, end)
+        for sts in toPrint :
+            print("ARRET SUIVANT :", sts)
+
+
+
+    def _printNeighbour(self, sts) :
+        """
+        METHODE PRIVEE DE TEST
+        Affiche les voisins d'un arret
+        param sts : arret dont on cherche les voisins
+        """
+        neighbour = self._getNeighbour(sts)    #voisins de l'arret
+        for key,value in neighbour.items() :
+            print("Ligne Bus " + str(key[1]) + " " + sts.getName(),
+                  "ARRETS VOISINS :", value)
+
+
+
+    def _getNodeMinDist(self, nodesToVisit = []) :
         """
         Cherche et retourne le noeud qui a la plus petite distance
         parmi la liste des distances à partir de la liste des noeuds à visiter
@@ -201,99 +313,56 @@ class BusNetwork :
         ret = None
         min = math.inf      #distance minimale initialisee a +infini
         for sts in nodesToVisit :
-            currentDist = distList[self.findStsIndex(sts)]  #distance du noeud a traiter
+            currentDist = self.distList[self.findStsIndex(sts)]  #distance du noeud a traiter
             if currentDist < min :
                 ret = sts
-                min = distList[self.findStsIndex(ret)]      #nouvelle distance minimale
+                min = currentDist     #nouvelle distance minimale
 
         return ret
 
 
 
-    def findStsIndex(self, sts) :
+    def _majDist(self, currentNode, neighbourNode) :
         """
-        Retourne l'id de l'arret du reseau passe en parametre
-        Si l'arret demande n'existe pas, retourne None
-        return type : int
+        Met a jour la liste des distances du reseau
+        PARAM currentNode : noeud courrant
+        PARAM neighbourNode : son noeud voisin
         """
-        ret = None
-        if sts not in self.getAllStations() :
-            print("Arret demande inconnu")
-            return ret
-        else :
-            for s in self.getAllStations() :    #sans risque de doublons puisque getAllStations() les retire deja
-                if s == sts :
-                    ret = s.getId()
-                    break
+        arcValue    = self._getCurrentArc(currentNode, neighbourNode).getDist()   #poid de l'arc entre le noeud courrant et son voisin
+        valueDist   = self.distList[self.findStsIndex(neighbourNode)]             #distance du noeud voisin
+        currentDist = self.distList[self.findStsIndex(currentNode)]               #distance du noeud courrant
 
-        return ret
+        if  valueDist > currentDist + arcValue :
+            self.distList[self.findStsIndex(neighbourNode)] = currentDist + arcValue    #maj des distances
+            self.fathers.setdefault(neighbourNode.getName(), currentNode.getName())     #maj des predecesseurs
 
-
-    def printConnections(self) :
-        """
-        Affiche les trajets entre les arrets du reseau ainsi que la ligne de bus associee
-        """
-        for key,value in self.connections.items() :
-            print("Ligne bus " + str(key[1]), value)
-
-
-    def _printNeighbour(self, sts) :
-        """
-        METHODE PRIVEE DE TEST
-        Affiche les voisins d'un arret
-        param sts : arret dont on cherche les voisins
-        """
-        neighbour = self._getNeighbour(sts)    #voisins de l'arret
-        for key,value in neighbour.items() :
-
-            print("Ligne Bus " + str(key[1]) + " " + sts.getName(),
-                  "ARRETS VOISINS :", value)
 
 
     def Dijkstra(self, begin, end) :
         """
-        Calcule le chemin le plus court d'un arret vers un autre
+        Calcule toutes les distances possibles à partir du depart
+        jusqu'a atteindre l'arret demande
+        Remplis egalement le dictionnaire des predecesseurs
 
         INPUT:
             param begin : arret de depart
             param end : arret d'arrivee
-
-        RETURN :
-            liste des noeud constituant le chemin le plus court
-            liste des distances tel que dist[node] = distance de begin a node
         """
-        shortWay    = []
-        node2visit  = self.getAllStations()                         #liste des noeuds a visiter
-        dist        = [math.inf for _ in range(len(node2visit))]    #liste des distances initialise a +infini
-        arcs        = self.getConnections()                         #liste des arcs ponderes
+        #VARIABLES
+        self.fathers = {}                      #dictionnaire des predecesseurs
+        node2visit   = self.getAllStations()   #liste des noeuds a visiter
 
+        #INITIALISATION
+        current                        = begin                                         #initialisation du noeud courrant
+        self.distList                  = [math.inf for _ in range(len(node2visit))]    #liste des distances initialise a +infini
+        neighbour                      = {}                                            #dictionnaire des voisins du noeud courrant
+        self.distList[self.findStsIndex(begin)] = 0                                    #distance au noeud origine initialisee a 0
 
         #DEBUT DE L'ALGORITHME
-        current                        = begin   #initialisation du noeud courrant
-        dist[self.findStsIndex(begin)] = 0       #distance au noeud origine initialisee a 0
-        neighbour                      = {}      #dictionnaire des voisins des noeuds
-
-        while current != end :
-            current   = self._getNodeMinDist(dist, node2visit) #recherche du nouveau noeud courrant
-            neighbour = self._getNeighbour(current)            #voisins du noeud courrant
-            node2visit.remove(current)                         #le noeud courrant n'est plus a visiter
-            #TRAITEMENT...
-            #commons = self._getIntersect(node2visit, neighbour.values())    #permet de retirer les voisins deja visites
-
-            #BUG : l'algo parcours en largeur les voisins, liste des voisins bug ?
-            # if neighbour.values() == None :
-            #     print("LISTE VOISINS VIDE")
-            # else :
-            #     for s in neighbour.values() : print("VOISINS :", s.getName())
-
-            # for sts in commons :
-            #     arcValue    = self._getCurrentArc(current, sts).getDist() #TODO : implementer _getCurrentArc()
-            #     valueDist   = dist[self.findStsIndex(sts)]       #distance du noeud en traitement
-            #     currentDist = dist[self.findStsIndex(current)]   #distance du noeud courrant
-            #
-            #     if valueDist > currentDist + arcValue :
-            #         dist[self.findStsIndex(sts)] = currentDist + arcValue
-            #         shortWay.append(sts.getName())
-            #         print("ARRET SUIVANT :", sts)
-
-        return dist, shortWay
+        while node2visit :
+            current = self._getNodeMinDist(node2visit)                      #recherche du nouveau noeud courrant
+            node2visit.remove(current)                                      #le noeud courrant n'est plus a visiter
+            neighbour = self._getNeighbour(current)                         #voisins du noeud courrant
+            commons   = self._getIntersect(node2visit, neighbour.values())  #permet de retirer les voisins deja visites
+            for sts in commons :
+                self._majDist(current, sts)                                 #mise a jour des distances

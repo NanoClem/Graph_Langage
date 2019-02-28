@@ -11,13 +11,13 @@ class Bus :
 
     def __init__(self, id, stationList = []) :
         """
-        CONSTRUCTEUR de bus
+        CONSTRUCTEUR de la classe Bus
         param id: ligne du bus
         param stationList: liste des arrets
         """
         self._num        = id
         self._stations   = stationList
-        self._terminus   = self._stations[-1]
+        self._terminus   = self._stations[-1]   #dernier élément du tableau
 
 
     def getNum(self) :

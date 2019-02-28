@@ -38,18 +38,13 @@ class Route :
         return self.ways
 
 
-    def buildRoute(self, direction = True) :
+    def buildRoute(self) :
         """
-        Construit la route du bus en fonction du sens du trajet
-        param direction: sens du trajet du bus
+        Construit la route effectuee par le bus
         """
-        stopBus = self.bus.getStations()                # liste des arrets du bus
-
-        if(not direction) :
-            stopBus.reverse()   # sens retour : on inverse l'ordre des arrets
-
-        for i in range(len(stopBus)-1) :
-            new_arc = Arc(stopBus[i], stopBus[i+1])     # nouveau chemin entre deux arrets
+        stsBus = self.bus.getStations()                # liste des arrets du bus
+        for i in range(len(stsBus)-1) :
+            new_arc = Arc(stsBus[i], stsBus[i+1])     # nouveau chemin entre deux arrets
             self.ways.append(new_arc)                   # ajout du chemin au trajet du bus
 
 

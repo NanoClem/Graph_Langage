@@ -15,7 +15,7 @@ except OSError:
 def dates2dic(dates):
     dic = {}
     splitted_dates = dates.split("\n")
-    print(splitted_dates)
+    # print(splitted_dates)
     for stop_dates in splitted_dates:
         tmp = stop_dates.split(" ")
         dic[tmp[0]] = tmp[1:]
@@ -23,8 +23,9 @@ def dates2dic(dates):
 
 slited_content = content.split("\n\n")
 regular_path = slited_content[0]
-print(regular_path)
+# print(regular_path)
 regular_date_go = dates2dic(slited_content[1])
+print(regular_date_go)
 regular_date_back = dates2dic(slited_content[2])
 we_holidays_path = slited_content[3]
 we_holidays_date_go = dates2dic(slited_content[4])
