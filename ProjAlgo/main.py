@@ -74,11 +74,11 @@ def main() :
 
     # ROUTE DES BUS
     #SIBRA1
-    pathSibra1 = Route(Sibra1)      # construction de la route
-    pathSibra1.buildRoute()
+    pathSibra1 = Route(Sibra1)
+    pathSibra1.buildUnWeightRoute()     # construction de la route non ponderee
     #SIBRA2
     pathSibra2 = Route(Sibra2)
-    pathSibra2.buildRoute()
+    pathSibra2.buildUnWeightRoute()
 
     # RESEAU DES BUS
     SibraNetwork = BusNetwork([pathSibra1, pathSibra2])
