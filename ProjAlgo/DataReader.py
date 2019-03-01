@@ -52,6 +52,22 @@ class DataReader :
         return self._content.split("\n\n")
 
 
+    def dates2dic(self, dates) :
+        """
+        Reprise depuis "data2py.py"
+        Converti sous forme de dictionnaire les dates lues
+        PARAM dates : dates sous forme brutes
+        RETURN : dictionnaire telle la paire key/value = nom_arret_bus/[horaires]
+        RETURN TYPE : Dict() (string, list[string])
+        """
+        dic = {}
+        splitted_dates = dates.split("\n")
+        for stop_dates in splitted_dates:
+            tmp = stop_dates.split(" ")
+            dic[tmp[0]] = tmp[1:]
+        return dic
+
+
     def readStationsName(self) :
         """
         Retourne le nom des differents arrets lus dans le fichier
@@ -60,3 +76,39 @@ class DataReader :
         raw_names     = self.sliceContent()[0]        # chaine brute des noms d'arrets
         raw_names     = raw_names.replace('+', 'N')   # remplacement du char '+' en 'N'
         return raw_names.split(" N ")                 # recuperation des noms individuels
+
+
+    def readRegularDateGo(self) :
+        """
+        Retourne les horaires regulieres a l'aller
+        RETURN TYPE : Dict() (string, list[string])
+        """
+        rawRegularGo = self.sliceContent()[1]
+        return self.dates2dic(rawRegularGo)
+
+
+    def readRegularDateBack(self) :
+        """
+        Retourne les horaires regulieres au retour
+        RETURN TYPE : Dict() (string, list[string])
+        """
+        rawRegularBack = self.sliceContent()[2]
+        return self.dates2dic(rawRegularBack)
+
+
+    def readWeHolidaysGo(self) :
+        """
+        Retourne les horaires week-end/vacances a l'aller
+        RETURN TYPE : Dict() (string, list[string])
+        """
+        rawWeHolidaysGo = self.sliceContent()[4]
+        return self.dates2dic(rawWeHolidaysGo)
+
+
+    def readWeHolidaysBack(self) :
+        """
+        Retourne les horaires week-end/vacances au retour
+        RETURN TYPE : Dict() (string, list[string])
+        """
+        rawWeHolidaysBack = self.sliceContent()[5]
+        return self.dates2dic(rawWeHolidaysBack)
