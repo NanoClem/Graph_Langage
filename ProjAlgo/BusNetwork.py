@@ -172,8 +172,7 @@ class BusNetwork :
             self.shortestWay.append(sts)
             sts = self.getStation(self.fathers[sts.getName()])
 
-        self.shortestWay.reverse()
-        return self.shortestWay
+        return self.shortestWay + [begin]
 
 
 
@@ -283,6 +282,7 @@ class BusNetwork :
         parcours effectue au prealable
         """
         toPrint = self.getShortestWay(begin, end)
+        # toPrint.reverse()
         for sts in toPrint :
             print("ARRET SUIVANT :", sts)
 

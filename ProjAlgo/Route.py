@@ -2,6 +2,7 @@
 creator : decoopmc
 """
 
+import time
 from Arc import Arc
 
 
@@ -38,6 +39,37 @@ class Route :
         return self.ways
 
 
+    def isWeekEnd(self) :
+        """
+        Renvoie vrai si l'on est en week-end, faux sinon
+        RETURN TYPE : boolean
+        """
+        days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+        if days[time.localtime()[6]] in days[5:7] :     #si aujourd'hui est dans le week-end
+            return True
+
+        return False
+
+
+    def calcWeight(self, sts1, sts2) :
+        """
+        Calcule le poids d'un arc liant deux arrets
+        Le poids est represente sous forme de minutes
+        RETURN : poids de l'arc en minutes
+        """
+        schedules = self.bus.getSchedules().getWeHolidaysDate()     #si ce n'est pas les vacances ou week-end
+        if not self.isWeekEnd() :
+            schedules = self.bus.getSchedules().getRegularDate()
+
+        #ICI TEST ALLER OU RETOUR
+
+        sch = self.bus.getSchedules().toDatetime(schedules[0])  #sens aller pour les tests
+        # for key, value in sch :
+
+
+
+    #RECUPERER L'HEURE ACTUELLE POUR SAVOIR QUELLES TRANCHE HORAIRE TRAITER
+    #NE PAS OUBLIER DE PRENDRE EN COMPTE LE SENS POUR LES HORAIRES ALLER OU RETOUR
     def buildRoute(self) :
         """
         Construit la route effectuee par le bus

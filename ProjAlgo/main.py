@@ -3,6 +3,7 @@ creator : decoopmc
 """
 
 from DataReader import DataReader
+from Schedule import Schedule
 from Bus import Bus
 from Station import Station
 from Route import Route
@@ -59,18 +60,22 @@ def main() :
 
     # BUS
     #LIGNE 1
-    reader.setReader(ligne1)                      # injection du nom du fichier pour la lecture
-    stations1 = reader.readStationsName()         # lecture du nom des arrets de la ligne 1
-    Sibra1    = Bus(1, createStations(stations1)) # nouvel objet Bus
+    reader.setReader(ligne1)                              # injection du nom du fichier pour la lecture
+    stations1     = reader.readStationsName()             # lecture du nom des arrets de la ligne 1
+    schedules1    = reader.getSchedules()                 # lecture des horaires de la ligne 1
+    schedules1Obj = Schedule(schedules1[0], schedules1[1], schedules1[2], schedules1[3])
+    Sibra1        = Bus(1, createStations(stations1), schedules1Obj)    # nouvel objet Bus
     #LIGNE2
     reader.setReader(ligne2)
-    stations2 = reader.readStationsName()
-    Sibra2    = Bus(2, createStations(stations2))
+    stations2     = reader.readStationsName()
+    schedules2    = reader.getSchedules()
+    schedules2Obj = Schedule(schedules2[0], schedules2[1], schedules2[2], schedules2[3])
+    Sibra2        = Bus(2, createStations(stations2), schedules2Obj)
 
     # ROUTE DES BUS
     #SIBRA1
     pathSibra1 = Route(Sibra1)      # construction de la route
-    pathSibra1.buildRoute()         # Sens aller
+    pathSibra1.buildRoute()
     #SIBRA2
     pathSibra2 = Route(Sibra2)
     pathSibra2.buildRoute()

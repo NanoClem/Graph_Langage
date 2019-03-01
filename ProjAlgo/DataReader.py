@@ -21,6 +21,14 @@ class DataReader :
         self._content  = ""
 
 
+    def getSchedules(self) :
+        """
+        Retourne la liste complete des horaires
+        RETURN TYPE : list[dict(string/list[string])]
+        """
+        return [self.readRegularDateGo, self.readRegularDateBack, self.readWeHolidaysGo, self.readWeHolidaysBack]
+
+
     def setReader(self, new_filename) :
         """
         Modifie le fichier a lire, nettoie le contenu deja lu precedemment et lis le nouveau contenu

@@ -9,15 +9,20 @@ class Bus :
     Il possede un numero designant la ligne de bus, et une liste de ses arrets
     """
 
-    def __init__(self, id, stationList = []) :
+    def __init__(self, id, stationList = [], h = None) :
         """
         CONSTRUCTEUR de la classe Bus
-        param id: ligne du bus
-        param stationList: liste des arrets
+        ATTRIBUTE _num : ligne du bus
+        ATTRIBUTE _stations : liste des arrets
+        ATTRIBUTE _terminusGo : arret terminus aller
+        ATTRIBUTE _terminusBack : arret terminus retour
+        ATTRIBUTE schedules : horaires du bus
         """
-        self._num        = id
-        self._stations   = stationList
-        self._terminus   = self._stations[-1]   #dernier élément du tableau
+        self._num          = id
+        self._stations     = stationList
+        self._terminusGo   = self._stations[-1]
+        self._terminusBack = self._stations[0]
+        self.schedules     = h
 
 
     def getNum(self) :
@@ -53,25 +58,46 @@ class Bus :
     def getNbStations(self) :
         """
         Retourne le nombre d'arrets sur le trajet du bus
-        :return: nombre d'arrets
+        RETURN : nombre d'arrets
         """
         return len(self._stations)
 
 
-    def getTerminus(self) :
+    def getTerminusGo(self) :
         """
-        Recupere l'arret terminus du bus
-        :return: arret terminus
+        Recupere l'arret terminus aller du bus
+        RETURN TYPE : Station
         """
-        return self._terminus
+        return self._terminusGo
 
 
-    def setTerminus(self, new_terminus) :
+    def getTerminusBack(self) :
         """
-        Modifie l'arret terminus
-        :return: arret terminus du bus
+        Recupere l'arret terminus retour du bus
+        RETURN TYPE : Station
         """
-        self._terminus = new_terminus
+        return self._terminusBack
+
+
+    def getSchedules(self) :
+        """
+        Retourne les horaires du bus
+        """
+        return self.schedules
+
+
+    def setTerminusGo(self, new_terminus) :
+        """
+        Modifie l'arret terminus aller
+        """
+        self._terminusGo = new_terminus
+
+
+    def setTerminusBack(self, new_terminus) :
+        """
+        Modifie l'arret terminus aller
+        """
+        self._terminusBack = new_terminus
 
 
     def printStations(self):

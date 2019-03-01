@@ -2,16 +2,20 @@
 creator : decoopmc
 """
 
+from datetime import time
+
+
 
 class Schedule :
     """
+    Cette classe definie les horaires d'un bus,
+    pour les heures regulieres et week-end/vacances,
+    pur chaque arret
     """
-
 
     def __init__(self, num, regularGo={}, regularBack={}, weHolidaysGo={}, weHolidaysBack={}) :
         """
-        Cette classe definie les horaires d'un bus,
-        pour les heures regulieres et week-end/vacances
+        CONSTRUCTEUR de classe Schedule
         ATTRIBUTE busID : numero du bus concerne par les horaires
         ATTRIBUTE regularGo/regularBack : horaires regulieres aller/retour
         ATTRIBUTE weHolidaysGo/weHolidaysBack : horaires week-end/vacances aller/retour
@@ -57,3 +61,20 @@ class Schedule :
             self.dateWeHolidaysGo = go
         if back != None :
             self.dateWeHolidaysBack = back
+
+
+    def toDatetime(self, dates) :
+        """
+        Converti sous forme de datetime les horaires du bus
+        PARAM dates : dates a convertir
+        RETURN TYPE : dict() (string/time)
+        """
+        datesTime = {}
+        for key,value in dates.values() :
+            if value != '-' :
+                h = time(int(value.split(':')[0]), int(value.split(':')[1]))
+                datesTime[key] = h
+            else :
+                datesTime[key] = None   #pas d'horaires a ce moment
+
+        return datesTime
