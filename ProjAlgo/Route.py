@@ -96,8 +96,9 @@ class Route :
 
     def calcWeight(self, sts1, sts2, dateNow) :
         """
-        Calcule le poids d'un arc liant deux arrets
-        Le poids est represente sous forme de minutes
+        Calcule le poids en minutes d'un arc liant deux arrets
+        Il est a remarquer que cette methode calcule le temps de trajet
+        entre deux arrets quels qu'ils soient
         RETURN : poids de l'arc en minutes
         """
         #RECUPERATION DES HORAIRES : week-end ou semaine
@@ -111,10 +112,8 @@ class Route :
         #     sch = ...
         # else :
         #     sch = ...
-
-        #WARNING : si pas d'horaires pour l'heure actuelle, que faire ??
-        sts      = [sts1.getName(), sts2.getName()]
         sch      = self.bus.getSchedules().toDatetime(schedules[0])     # horaires sens aller pour les tests
+        sts      = [sts1.getName(), sts2.getName()]                     # nom des arret dont on veut determiner
         weight   = 0                                                    # poids de l'arc en minutes
         goodHour = []                                                   # horaires correspondant au prochain passage
 
@@ -128,7 +127,7 @@ class Route :
                     goodHour.append(t)
                     break
 
-        weight = goodHour[1] - goodHour[0]  # temps entre le trajet de deux arrets
+        weight = self.toMinutes(goodHour[1]) - self.toMinutes(goodHour[0])  # temps en minutes entre le trajet de deux arrets
         return weight
 
 
