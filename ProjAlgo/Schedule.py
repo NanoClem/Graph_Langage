@@ -63,18 +63,19 @@ class Schedule :
             self.dateWeHolidaysBack = back
 
 
-    def toDatetime(self, dates) :
+    def toDatetime(self, stsDates) :
         """
         Converti sous forme de datetime les horaires du bus
         PARAM dates : dates a convertir
         RETURN TYPE : dict() (string/time)
         """
         datesTime = {}
-        for key,value in dates.values() :
-            if value != '-' :
-                h = time(int(value.split(':')[0]), int(value.split(':')[1]))
-                datesTime[key] = h
-            else :
-                datesTime[key] = None   #pas d'horaires a ce moment
+        for key,value in stsDates.items() :
+            for v in value :
+                if v != '-' :
+                    h = time(int(v.split(':')[0]), int(v.split(':')[1]))
+                    datesTime[key] = h
+                else :
+                    datesTime[key] = None   #pas d'horaires a ce moment
 
         return datesTime

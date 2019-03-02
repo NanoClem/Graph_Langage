@@ -3,6 +3,7 @@ creator : decoopmc
 """
 
 import time
+from datetime import datetime
 from Arc import Arc
 
 
@@ -55,38 +56,95 @@ class Route :
 
 
 
-    def calcWeight(self, sts1, sts2) :
+    def isGo(self) :
+        """
+        Permet de determiner si l'on se trouve
+        en sens aller ou retour
+        """
+        pass
+
+
+
+    def nextHour(self, hours, idCurrentH) :
+        """
+        Recupere la prochaine heure de passage du bus
+        par rapport a l'heure passee en parametre
+        PARAM hours : liste des horaires du bus, list[] time
+        PARAM idCurrentH : index de l'heure dont on veut connaître la suivante
+        """
+        ret = None
+        list(filter(None.__ne__, hours))                # DEUXIEME SECURITE SUR LES HEURES NON DISPONIBLES
+        if hours[idCurrentH] == hours[-1] :             # si l'heure courrante est la derniere de la journee
+            ret = hours[0]                              # on renvoie la premiere heure disponible du lendemain
+        else :                                          # sinon
+            ret = hours[idCurrentH + 1]                 # l'heure suivante est trouvee
+
+        return ret
+
+
+
+    def toMinutes(self, myTime) :
+        """
+        Calcule les minutes totales a partir
+        d'un type time
+        PARAM myTime : variable de type time
+        """
+        minutesTime = myTime.hour*60 + myTime.minute
+        return minutesTime
+
+
+
+    def calcWeight(self, sts1, sts2, dateNow) :
         """
         Calcule le poids d'un arc liant deux arrets
         Le poids est represente sous forme de minutes
         RETURN : poids de l'arc en minutes
         """
-        #On recupere le nom du jour (aujourd'hui)
+        #RECUPERATION DES HORAIRES : week-end ou semaine
         schedules = self.bus.getSchedules().getWeHolidaysDate()
         if not self.isWeekEnd() :
             schedules = self.bus.getSchedules().getRegularDate()
 
-        #ICI TEST ALLER OU RETOUR
+        #TEST ALLER OU RETOUR
+        # sch = None
+        # if self.isGo() :
+        #     sch = ...
+        # else :
+        #     sch = ...
 
-        #sch = self.bus.getSchedules().toDatetime(schedules[0])  #sens aller pour les tests
-        # for key, value in sch :
+        #WARNING : si pas d'horaires pour l'heure actuelle, que faire ??
+        sts      = [sts1.getName(), sts2.getName()]
+        sch      = self.bus.getSchedules().toDatetime(schedules[0])     # horaires sens aller pour les tests
+        weight   = 0                                                    # poids de l'arc en minutes
+        goodHour = []                                                   # horaires correspondant au prochain passage
+
+        for s in sts :
+            list(filter(None.__ne__, sch[s]))    # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS
+            for t in sch[s] :
+                if self.toMinutes(t) < self.toMinutes(dateNow) :             # si l'heure proposee est depassee
+                    goodHour.append(self.nextHour(sch[s], sch[s].index(t)))  # prochaine heure disponible de passage du bus
+                    break
+                else :
+                    goodHour.append(t)
+                    break
+
+        weight = goodHour[1] - goodHour[0]  # temps entre le trajet de deux arrets
+        return weight
 
 
 
-    #NE PAS OUBLIER DE PRENDRE EN COMPTE LE SENS POUR LES HORAIRES ALLER OU RETOUR
     def buildUnWeightRoute(self) :
         """
         Construit la route effectuee par le bus
         Cette methode ne prends pas en compte les poids des arcs
         """
-        stsBus = self.bus.getStations()                # liste des arrets du bus
+        stsBus = self.bus.getStations()                       # liste des arrets du bus
         for i in range(len(stsBus)-1) :
-            new_arc = Arc(stsBus[i], stsBus[i+1])     # nouveau chemin entre deux arrets
-            self.ways.append(new_arc)                   # ajout du chemin au trajet du bus
+            new_arc = Arc(stsBus[i], stsBus[i+1])             # nouveau chemin entre deux arrets
+            self.ways.append(new_arc)                         # ajout du chemin au trajet du bus
 
 
 
-    #RECUPERER L'HEURE ACTUELLE POUR SAVOIR QUELLES TRANCHE HORAIRE TRAITER
     #NE PAS OUBLIER DE PRENDRE EN COMPTE LE SENS POUR LES HORAIRES ALLER OU RETOUR
     def buildWeightRoute(self) :
         """
@@ -94,10 +152,12 @@ class Route :
         Cette methode prends en compte les horaires des bus,
         et donc les poids des arcs
         """
-        stsBus = self.bus.getStations()                # liste des arrets du bus
+        stsBus  = self.bus.getStations()        # liste des arrets du bus
+        timeNow = datetime.now().time()         # heure actuelle
         for i in range(len(stsBus)-1) :
-            new_arc = Arc(stsBus[i], stsBus[i+1])     # nouveau chemin entre deux arrets
-            self.ways.append(new_arc)                   # ajout du chemin au trajet du bus
+            weight  = self.calcWeight(stsBus[i], stsBus[i+1], timeNow)  # poids du chemin en minutes
+            new_arc = Arc(stsBus[i], stsBus[i+1], weight)               # nouveau chemin entre deux arrets
+            self.ways.append(new_arc)                                   # ajout du chemin au trajet du bus
 
 
 

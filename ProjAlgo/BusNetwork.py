@@ -282,7 +282,7 @@ class BusNetwork :
         parcours effectue au prealable
         """
         toPrint = self.getShortestWay(begin, end)
-        # toPrint.reverse()
+        toPrint.reverse()
         for sts in toPrint :
             print("ARRET SUIVANT :", sts)
 
