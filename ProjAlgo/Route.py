@@ -18,10 +18,12 @@ class Route :
         """
         CONSTUCTEUR de route
         param new_bus: bus dont la route est a construire
-        attribute ways: liste des chemins (arcs) de la route
+        ATTRIBUTE unWays : liste des chemins non ponderes de la route
+        attribute ways: liste des chemins ponderes (arcs) de la route
         """
-        self.bus   = new_bus
-        self.ways  = []
+        self.bus    = new_bus
+        self.unWays = []
+        self.ways   = []
 
 
 
@@ -34,13 +36,12 @@ class Route :
 
 
 
-    def getRoute(self) :
+    def getUnWeightRoute(self) :
         """
         Retourne la route du bus
         return : liste des chemins empruntes par le bus
         """
-        return self.ways
-
+        return self.unWays
 
 
     def isWeekEnd(self) :
@@ -140,7 +141,7 @@ class Route :
         stsBus = self.bus.getStations()                       # liste des arrets du bus
         for i in range(len(stsBus)-1) :
             new_arc = Arc(stsBus[i], stsBus[i+1])             # nouveau chemin entre deux arrets
-            self.ways.append(new_arc)                         # ajout du chemin au trajet du bus
+            self.unWays.append(new_arc)                       # ajout du chemin au trajet du bus
 
 
 

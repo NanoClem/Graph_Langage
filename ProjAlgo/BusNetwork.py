@@ -33,6 +33,7 @@ class BusNetwork :
 
 
 
+    #TROUVER UN MOYEN DE SAVOIR SI ON EST EN ARC PONDERES OU NON
     def _prepConnections(self) :
         """
         Methode privee qui regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
@@ -44,7 +45,7 @@ class BusNetwork :
         hashmap = OrderedDict()     #table de hashage
         cpt = 0                     #compteur ArcNum du tuple(ArcNum,BusID)
         for net in self.network :
-            for way in net.getRoute() :
+            for way in net.getUnWeightRoute() :
                 mykey = (cpt, net.getBus().getNum())
                 hashmap[mykey] = way
                 cpt += 1

@@ -24,6 +24,19 @@ def createStations(names) :
     return stationsBus
 
 
+def doWantHours() :
+    """
+    Demande a l'utilisateur s'il veut prendre en compte les horaires
+    dans le choix de son itineraire
+    RETURN : Vrai si l'utilisateur veut les horaires, Faux sinon
+    """
+    wantHours = input("Voulez-vous prendre en compte les horaires ? y/n")
+    while wantHours != "y" or wantHours != "n" :
+        wantHours = input("Cette option n'existe pas, veuillez choisir entre y/n")
+
+    return wantHours == "y"
+
+
 def userInteraction(net) :
     """
     Regroupe les gestions de l'utilisateur et ses interactions dans le programme
@@ -32,6 +45,7 @@ def userInteraction(net) :
         param net : reseau de bus sur lequel l'utilisateur se base
     RETURN :
         liste des arrets choisis tels que [depart, destination]
+        booleen indiquant si l'utilisateur veut prendre en compte les horaires ou non
     """
     inputUser = []
     options = ["Saisir l'arret de depart : ", "Saisir votre destination : "]
@@ -105,7 +119,8 @@ def main() :
     #============================================================
     #   TEST 4 : Plus court chemin
     #============================================================
-    userChoices = userInteraction(SibraNetwork)
+    userChoices  = userInteraction(SibraNetwork)
+    userWantHous = doWantHours()    # inserer dans printShortestWay() et getShortestWay()
     print('\n')
     SibraNetwork.printShortestWay(userChoices[0], userChoices[1])
 
