@@ -26,7 +26,7 @@ class BusNetwork :
         attribute shortestWay : liste du chemin le plus court
         """
         self.network        = new_routes
-        self.connections    = self._prepConnections()
+        self.connections    = {}
         self.distList       = []
         self.fathers        = {}
         self.shortestWay    = []
@@ -34,18 +34,21 @@ class BusNetwork :
 
 
     #TROUVER UN MOYEN DE SAVOIR SI ON EST EN ARC PONDERES OU NON
-    def _prepConnections(self) :
+    def _prepConnections(self, doHours) :
         """
         Methode privee qui regroupe l'ensemble des arcs dans une hashmap (ici un dictionnaire)
         PAIRE KEY/VALUE : key = tuple(ArcNum,BusID)  value = Arc
-        Ainsi, on peut savoir quel arc appartient a telle route
+        Ainsi, on peut savoir quel arc appartient a tel bus, et donc a telle route
         return : hashmap key/value = tuple(ArcNum,BusID) / Arc
         return type : OrderedDict
         """
         hashmap = OrderedDict()     #table de hashage
         cpt = 0                     #compteur ArcNum du tuple(ArcNum,BusID)
         for net in self.network :
-            for way in net.getUnWeightRoute() :
+            route = net.getUnWeightRoute()
+            if doHours :
+                route = net.getWeightRoute()
+            for way in route :
                 mykey = (cpt, net.getBus().getNum())
                 hashmap[mykey] = way
                 cpt += 1
@@ -161,11 +164,12 @@ class BusNetwork :
 
 
 
-    def getShortestWay(self, begin, end) :
+    def getShortestWay(self, begin, end, doHours) :
         """
         Calcule le chemin le plus court a partir
         des resultats de Dijkstra
         """
+        self.connections = self._prepConnections(doHours)
         sts = end
         self.Dijkstra(begin, end)
 
@@ -224,9 +228,7 @@ class BusNetwork :
         return ret
 
 
-    #ATTENTION :
-    # Vu que le sens est fait a la main (aller/retour), le dernier arret de la liste (terminus)
-    # n'aura pas de voisin : arc.getEnd() renverra None
+
     def _getCurrentArc(self, currentNode = None, neighbour = None):
         """
         Trouve l'arc associé au noeud courrant et son voisin passes
@@ -277,13 +279,14 @@ class BusNetwork :
 
 
 
-    def printShortestWay(self, begin, end) :
+    def printShortestWay(self, begin, end, doHours) :
         """
         Affiche le chemin le plus court d'un
         parcours effectue au prealable
         """
-        toPrint = self.getShortestWay(begin, end)
+        toPrint = self.getShortestWay(begin, end, doHours)
         toPrint.reverse()
+        print(begin, "---->", end)
         for sts in toPrint :
             print("ARRET SUIVANT :", sts)
 

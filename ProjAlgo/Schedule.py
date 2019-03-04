@@ -23,7 +23,7 @@ class Schedule :
         self.busID       = num
         self.dateRegGo   = regularGo
         self.dateRegBack = regularBack
-        self.dateWeHolidaysGo = weHolidaysGo
+        self.dateWeHolidaysGo   = weHolidaysGo
         self.dateWeHolidaysBack = weHolidaysBack
 
 
@@ -72,10 +72,10 @@ class Schedule :
         datesTime = {}
         for key,value in stsDates.items() :
             for v in value :
-                if v != '-' :
+                if value[v] != '-' :
                     h = time(int(v.split(':')[0]), int(v.split(':')[1]))
-                    datesTime[key] = h
+                    value[v] = h
                 else :
-                    datesTime[key] = None   #pas d'horaires a ce moment
+                    value[v] = None   #pas d'horaires a ce moment
 
         return datesTime

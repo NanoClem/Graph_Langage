@@ -30,11 +30,12 @@ def doWantHours() :
     dans le choix de son itineraire
     RETURN : Vrai si l'utilisateur veut les horaires, Faux sinon
     """
-    wantHours = input("Voulez-vous prendre en compte les horaires ? y/n")
-    while wantHours != "y" or wantHours != "n" :
-        wantHours = input("Cette option n'existe pas, veuillez choisir entre y/n")
+    options = ["y", "n"]
+    wantHours = input("Voulez-vous prendre en compte les horaires ? y/n : ")
+    while wantHours not in options :
+        wantHours = input("Cette option n'existe pas, veuillez choisir entre y/n : ")
 
-    return wantHours == "y"
+    return wantHours == 'y'
 
 
 def userInteraction(net) :
@@ -113,16 +114,20 @@ def main() :
     #============================================================
     #sameSts    = SibraNetwork.getSameStations(pathSibra1, pathSibra2)    # liste des arrets en commun
     #print("ARRETS EN COMMUN : ", sameSts)                                # arrets en commun entre chaque route de bus
-    #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStationsName())
+    #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStationsName())      # tous les arrets du reseau
     #SibraNetwork.printConnections()                                      # affichage des trajet entre les arrets du reseau
 
     #============================================================
-    #   TEST 4 : Plus court chemin
+    #   TEST 4 : Horaires
     #============================================================
-    userChoices  = userInteraction(SibraNetwork)
-    userWantHous = doWantHours()    # inserer dans printShortestWay() et getShortestWay()
-    print('\n')
-    SibraNetwork.printShortestWay(userChoices[0], userChoices[1])
+    #toDate = 
+
+    #============================================================
+    #   TEST 5 : Plus court chemin
+    #============================================================
+    userChoices   = userInteraction(SibraNetwork)                                   # l'user choisi les arrets
+    userWantHours = doWantHours()                                                   # on demande si l'user veut prendre en compte les horaires
+    SibraNetwork.printShortestWay(userChoices[0], userChoices[1], userWantHours)    # affichage du chemin le plus court
 
 
 

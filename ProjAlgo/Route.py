@@ -44,6 +44,16 @@ class Route :
         return self.unWays
 
 
+
+    def getWeightRoute(self) :
+        """
+        Retourne la route du bus
+        return : liste des chemins empruntes par le bus, avec prise en compte des horaires
+        """
+        return self.ways
+
+
+
     def isWeekEnd(self) :
         """
         Renvoie vrai si l'on est en week-end, faux sinon
