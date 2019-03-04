@@ -113,9 +113,10 @@ class Route :
         RETURN : poids de l'arc en minutes
         """
         #RECUPERATION DES HORAIRES : week-end ou semaine
+
         schedules = self.bus.getSchedules().getWeHolidaysDate()
         if not self.isWeekEnd() :
-            schedules = self.bus.getSchedules().getRegularDate()
+            schedules = self.bus.getSchedules().getRegularDate()        # horaires sens aller pour les tests
 
         #TEST ALLER OU RETOUR
         # sch = None
@@ -123,10 +124,11 @@ class Route :
         #     sch = ...
         # else :
         #     sch = ...
-        sch      = self.bus.getSchedules().toDatetime(schedules[0])     # horaires sens aller pour les tests
+        sch      = self.bus.getSchedules().toDatetime(schedules[0])     # conversion des values en datetime
         sts      = [sts1.getName(), sts2.getName()]                     # nom des arret dont on veut determiner
         weight   = 0                                                    # poids de l'arc en minutes
         goodHour = []                                                   # horaires correspondant au prochain passage
+        print()
 
         for s in sts :
             list(filter(None.__ne__, sch[s]))    # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS

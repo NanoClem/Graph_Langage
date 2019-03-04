@@ -27,6 +27,16 @@ class Schedule :
         self.dateWeHolidaysBack = weHolidaysBack
 
 
+
+    def getAllDates(self) :
+        """
+        Retourne la liste complete des horaires
+        RETURN TYPE : list[dict(string/list[string])]
+        """
+        return [self.dateRegGo, self.dateRegBack, self.dateWeHolidaysGo, self.dateWeHolidaysBack]
+
+
+
     def getRegularDate(self) :
         """
         Retourne les horaires regulieres aller/retour
@@ -34,11 +44,13 @@ class Schedule :
         return [self.dateRegGo, self.dateRegBack]
 
 
+
     def getWeHolidaysDate(self) :
         """
         Retourne les horaires week-end/vacances aller/retour
         """
         return [self.dateWeHolidaysGo, self.dateWeHolidaysBack]
+
 
 
     def setRegularDate(self, go = None, back = None) :
@@ -52,6 +64,7 @@ class Schedule :
             self.dateRegBack = back
 
 
+
     def setWeHolidaysDate(self, go = None, back = None) :
         """
         Modifie les horaires week-end/vacances aller/retour
@@ -63,6 +76,7 @@ class Schedule :
             self.dateWeHolidaysBack = back
 
 
+
     def toDatetime(self, stsDates) :
         """
         Converti sous forme de datetime les horaires du bus
@@ -71,11 +85,11 @@ class Schedule :
         """
         datesTime = {}
         for key,value in stsDates.items() :
-            for v in value :
-                if value[v] != '-' :
+            for i,v in enumerate(value) :
+                if value[i] != '-' :
                     h = time(int(v.split(':')[0]), int(v.split(':')[1]))
-                    value[v] = h
+                    value[i] = h
                 else :
-                    value[v] = None   #pas d'horaires a ce moment
+                    value[i] = None   #pas d'horaires a ce moment
 
         return datesTime

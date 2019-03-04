@@ -91,9 +91,11 @@ def main() :
     #SIBRA1
     pathSibra1 = Route(Sibra1)
     pathSibra1.buildUnWeightRoute()     # construction de la route non ponderee
+    pathSibra1.buildWeightRoute()       # construction de la route ponderee
     #SIBRA2
     pathSibra2 = Route(Sibra2)
     pathSibra2.buildUnWeightRoute()
+    pathSibra2.buildWeightRoute()
 
     # RESEAU DES BUS
     SibraNetwork = BusNetwork([pathSibra1, pathSibra2])
@@ -120,7 +122,7 @@ def main() :
     #============================================================
     #   TEST 4 : Horaires
     #============================================================
-    #toDate = 
+    
 
     #============================================================
     #   TEST 5 : Plus court chemin

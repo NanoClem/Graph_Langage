@@ -21,12 +21,14 @@ class DataReader :
         self._content  = ""
 
 
+
     def getSchedules(self) :
         """
         Retourne la liste complete des horaires
         RETURN TYPE : list[dict(string/list[string])]
         """
-        return [self.readRegularDateGo, self.readRegularDateBack, self.readWeHolidaysGo, self.readWeHolidaysBack]
+        return [self.readRegularDateGo(), self.readRegularDateBack(), self.readWeHolidaysGo(), self.readWeHolidaysBack()]
+
 
 
     def setReader(self, new_filename) :
@@ -44,6 +46,7 @@ class DataReader :
             print("Erreur : le fichier n'a pas pu etre ouvert !")
 
 
+
     def setFilename(self, new_filename):
         """
         Modifie le nom du fichier contenant
@@ -52,12 +55,14 @@ class DataReader :
         self._filename = new_filename
 
 
+
     def sliceContent(self) :
         """
         Decoupe et renvoie les blocs separes par un double retour chariot
         return : liste des blocs
         """
         return self._content.split("\n\n")
+
 
 
     def dates2dic(self, dates) :
@@ -76,6 +81,7 @@ class DataReader :
         return dic
 
 
+
     def readStationsName(self) :
         """
         Retourne le nom des differents arrets lus dans le fichier
@@ -84,6 +90,7 @@ class DataReader :
         raw_names     = self.sliceContent()[0]        # chaine brute des noms d'arrets
         raw_names     = raw_names.replace('+', 'N')   # remplacement du char '+' en 'N'
         return raw_names.split(" N ")                 # recuperation des noms individuels
+
 
 
     def readRegularDateGo(self) :
@@ -95,6 +102,7 @@ class DataReader :
         return self.dates2dic(rawRegularGo)
 
 
+
     def readRegularDateBack(self) :
         """
         Retourne les horaires regulieres au retour
@@ -104,6 +112,7 @@ class DataReader :
         return self.dates2dic(rawRegularBack)
 
 
+
     def readWeHolidaysGo(self) :
         """
         Retourne les horaires week-end/vacances a l'aller
@@ -111,6 +120,7 @@ class DataReader :
         """
         rawWeHolidaysGo = self.sliceContent()[4]
         return self.dates2dic(rawWeHolidaysGo)
+
 
 
     def readWeHolidaysBack(self) :
