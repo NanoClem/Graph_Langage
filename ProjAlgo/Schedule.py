@@ -1,7 +1,7 @@
 """
 creator : decoopmc
 """
-
+import datetime
 from datetime import time
 
 
@@ -83,13 +83,15 @@ class Schedule :
         PARAM dates : dates a convertir
         RETURN TYPE : dict() (string/time)
         """
-        datesTime = {}
+        datesTime = stsDates
         for key,value in stsDates.items() :
             for i,v in enumerate(value) :
-                if value[i] != '-' :
+                if isinstance(v, datetime.time) :       # s'il y a deja eu conversion, on ne fait rien
+                    pass
+                elif v!= '-' and v!= None :
                     h = time(int(v.split(':')[0]), int(v.split(':')[1]))
-                    value[i] = h
+                    datesTime[key][i] = h
                 else :
-                    value[i] = None   #pas d'horaires a ce moment
+                    datesTime[key][i] = None            # pas d'horaires a ce moment
 
         return datesTime

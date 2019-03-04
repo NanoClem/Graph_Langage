@@ -283,12 +283,23 @@ class BusNetwork :
         """
         Affiche le chemin le plus court d'un
         parcours effectue au prealable
+        PARAM begin/end :
         """
         toPrint = self.getShortestWay(begin, end, doHours)
         toPrint.reverse()
         print(begin, "---->", end)
-        for sts in toPrint :
-            print("ARRET SUIVANT :", sts)
+
+        if not doHours :
+            for sts in toPrint :
+                print("ARRET SUIVANT :", sts)
+        else :
+            total = 0
+            for i in range(len(toPrint)-1) :
+                a = self._getCurrentArc(toPrint[i], toPrint[i+1])    # arc liant les arrets du chemin
+                w = a.getDist()                                      # poids de l'arc en minutes
+                total += w
+                print(a, "TEMPS : %d minutes" %w)
+            print("TEMPS TOTAL : %d minutes" %total)
 
 
 

@@ -99,6 +99,7 @@ class Route :
         Calcule les minutes totales a partir
         d'un type time
         PARAM myTime : variable de type time
+        RETURN : nombre de minutes totales
         """
         minutesTime = myTime.hour*60 + myTime.minute
         return minutesTime
@@ -128,10 +129,10 @@ class Route :
         sts      = [sts1.getName(), sts2.getName()]                     # nom des arret dont on veut determiner
         weight   = 0                                                    # poids de l'arc en minutes
         goodHour = []                                                   # horaires correspondant au prochain passage
-        print()
 
+        # print(schedules[0])
         for s in sts :
-            list(filter(None.__ne__, sch[s]))    # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS
+            sch[s] = list(filter(None.__ne__, sch[s]))    # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS
             for t in sch[s] :
                 if self.toMinutes(t) < self.toMinutes(dateNow) :             # si l'heure proposee est depassee
                     goodHour.append(self.nextHour(sch[s], sch[s].index(t)))  # prochaine heure disponible de passage du bus
@@ -140,6 +141,7 @@ class Route :
                     goodHour.append(t)
                     break
 
+        print(goodHour[1], goodHour[0])
         weight = self.toMinutes(goodHour[1]) - self.toMinutes(goodHour[0])  # temps en minutes entre le trajet de deux arrets
         return weight
 
