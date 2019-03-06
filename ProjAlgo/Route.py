@@ -67,15 +67,6 @@ class Route :
 
 
 
-    def isGo(self) :
-        """
-        Permet de determiner si l'on se trouve
-        en sens aller ou retour
-        """
-        pass
-
-
-
     def nextHour(self, hours, idCurrentH) :
         """
         Recupere la prochaine heure de passage du bus
@@ -84,7 +75,7 @@ class Route :
         PARAM idCurrentH : index de l'heure dont on veut connaître la suivante
         """
         ret = None
-        list(filter(None.__ne__, hours))                # DEUXIEME SECURITE SUR LES HEURES NON DISPONIBLES
+        hours = list(filter(None.__ne__, hours))        # DEUXIEME SECURITE SUR LES HEURES NON DISPONIBLES
         if hours[idCurrentH] == hours[-1] :             # si l'heure courrante est la derniere de la journee
             ret = hours[0]                              # on renvoie la premiere heure disponible du lendemain
         else :                                          # sinon
@@ -106,33 +97,34 @@ class Route :
 
 
 
-    def calcWeight(self, sts1, sts2, dateNow) :
+    def calcWeight(self, sts1, sts2, dateNow, isGo = True) :
         """
         Calcule le poids en minutes d'un arc liant deux arrets
         Il est a remarquer que cette methode calcule le temps de trajet
         entre deux arrets quels qu'ils soient
-        RETURN : poids de l'arc en minutes
+        INPUT :
+            PARAM sts1, sts2 : arrets entre lesquels on veut calculer le poids de l'arc les liant
+            PARAM dateNow : heure actuelle
+            PARAM isGo : Vrai si on est en sens aller, faux si on est en sens retour
+        OUTPUT :
+            RETURN : poids de l'arc en minutes entre les deux arrets en parametre
         """
         #RECUPERATION DES HORAIRES : week-end ou semaine
-
         schedules = self.bus.getSchedules().getWeHolidaysDate()
         if not self.isWeekEnd() :
             schedules = self.bus.getSchedules().getRegularDate()        # horaires sens aller pour les tests
 
         #TEST ALLER OU RETOUR
-        # sch = None
-        # if self.isGo() :
-        #     sch = ...
-        # else :
-        #     sch = ...
-        sch      = self.bus.getSchedules().toDatetime(schedules[0])     # conversion des values en datetime
+        sch = self.bus.getSchedules().toDatetime(schedules[1])     # conversion des values en datetime
+        if isGo :
+            sch = self.bus.getSchedules().toDatetime(schedules[0])
+
         sts      = [sts1.getName(), sts2.getName()]                     # nom des arret dont on veut determiner
         weight   = 0                                                    # poids de l'arc en minutes
         goodHour = []                                                   # horaires correspondant au prochain passage
 
-        # print(schedules[0])
         for s in sts :
-            sch[s] = list(filter(None.__ne__, sch[s]))    # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS
+            sch[s] = list(filter(None.__ne__, sch[s]))                       # ON ENLEVE LES HEURES OU LE BUS NE PASSE PAS
             for t in sch[s] :
                 if self.toMinutes(t) < self.toMinutes(dateNow) :             # si l'heure proposee est depassee
                     goodHour.append(self.nextHour(sch[s], sch[s].index(t)))  # prochaine heure disponible de passage du bus
@@ -141,8 +133,7 @@ class Route :
                     goodHour.append(t)
                     break
 
-        print(goodHour[1], goodHour[0])
-        weight = self.toMinutes(goodHour[1]) - self.toMinutes(goodHour[0])  # temps en minutes entre le trajet de deux arrets
+        weight = self.toMinutes(goodHour[0]) - self.toMinutes(goodHour[1])  # temps en minutes entre le trajet de deux arrets
         return weight
 
 
@@ -160,11 +151,12 @@ class Route :
 
 
     #NE PAS OUBLIER DE PRENDRE EN COMPTE LE SENS POUR LES HORAIRES ALLER OU RETOUR
-    def buildWeightRoute(self) :
+    def buildWeightRoute(self, isGo = True) :
         """
         Construit la route effectuee par le bus
         Cette methode prends en compte les horaires des bus,
         et donc les poids des arcs
+        PARAM isGo : sens aller ou retour
         """
         stsBus  = self.bus.getStations()        # liste des arrets du bus
         timeNow = datetime.now().time()         # heure actuelle

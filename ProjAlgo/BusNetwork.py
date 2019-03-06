@@ -287,7 +287,7 @@ class BusNetwork :
         """
         toPrint = self.getShortestWay(begin, end, doHours)
         toPrint.reverse()
-        print(begin, "---->", end)
+        print("DEPART :", begin, " DESTINATION :", end)
 
         if not doHours :
             for sts in toPrint :
@@ -298,7 +298,7 @@ class BusNetwork :
                 a = self._getCurrentArc(toPrint[i], toPrint[i+1])    # arc liant les arrets du chemin
                 w = a.getDist()                                      # poids de l'arc en minutes
                 total += w
-                print(a, "TEMPS : %d minutes" %w)
+                print(a, "\n TEMPS : %d minutes" %w)
             print("TEMPS TOTAL : %d minutes" %total)
 
 

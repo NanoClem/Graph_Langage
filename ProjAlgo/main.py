@@ -38,6 +38,20 @@ def doWantHours() :
     return wantHours == 'y'
 
 
+def isGo(begin, end, path) :
+    """
+    Permet de determiner si l'on se trouve
+    en sens aller ou retour
+    PARAM begin, end : arrets de depart et d'arrivee
+    PARAM path : trajet du bus comprenant les deux arrets
+    """
+    ret = True
+    if path.index(end) < path.index(begin) :    # l'arret d'arrivee apparait avant le depart sur le trajet
+        ret = False
+
+    return ret
+
+
 def userInteraction(net) :
     """
     Regroupe les gestions de l'utilisateur et ses interactions dans le programme
@@ -91,7 +105,7 @@ def main() :
     #SIBRA1
     pathSibra1 = Route(Sibra1)
     pathSibra1.buildUnWeightRoute()     # construction de la route non ponderee
-    pathSibra1.buildWeightRoute()       # construction de la route ponderee
+
     #SIBRA2
     pathSibra2 = Route(Sibra2)
     pathSibra2.buildUnWeightRoute()
@@ -119,15 +133,23 @@ def main() :
     #print("ARRETS DU RESEAU : ", SibraNetwork.getAllStationsName())      # tous les arrets du reseau
     #SibraNetwork.printConnections()                                      # affichage des trajet entre les arrets du reseau
 
-    #============================================================
-    #   TEST 4 : Horaires
-    #============================================================
-    
 
     #============================================================
-    #   TEST 5 : Plus court chemin
+    #   TEST 4 : Plus court chemin
     #============================================================
     userChoices   = userInteraction(SibraNetwork)                                   # l'user choisi les arrets
+
+    # DETERMINATION DU SENS
+    goORback1 = isGo(userChoices[0], userChoices[1], Sibra1.getStations())
+    goORback2 = isGo(userChoices[0], userChoices[1], Sibra2.getStations())
+
+    # CONSTRUCTION DES ROUTES PONDEREES (en fonction du sens, du jour et de l'heure actuelle)
+    # FIXER LES BUGS
+    if userChoices[0] in Sibra1.getStations() or userChoices[1] in Sibra1.getStations() :
+        pathSibra1.buildWeightRoute(goORback1)
+    if userChoices[0] in Sibra1.getStations() or userChoices[1] in Sibra2.getStations() :
+        pathSibra2.buildWeightRoute(goORback2)
+
     userWantHours = doWantHours()                                                   # on demande si l'user veut prendre en compte les horaires
     SibraNetwork.printShortestWay(userChoices[0], userChoices[1], userWantHours)    # affichage du chemin le plus court
 
