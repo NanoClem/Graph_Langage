@@ -80,10 +80,11 @@ class BusNetwork :
         RETURN : vrai s'il existe, faux sinon
         RETURN TYPE : boolean
         """
+        ret = False
         if stsName in self.getAllStationsName() :
-            return True
+            ret = True
 
-        return False
+        return ret
 
 
 
@@ -102,35 +103,35 @@ class BusNetwork :
 
 
 
-    # def isGo(self, begin, end) :
-    #     """
-    #     Permet de determiner si l'on se trouveen sens aller
-    #     ou retour pour chaque route du reseau, en fonction
-    #     de l'arret de depart et celui d'arrivee
-    #     PARAM begin, end : arrets de depart et d'arrivee
-    #     RETURN : dictionnaire des sens des arret
-    #     RETURN TYPE : dict{} of boolean
-    #     """
-    #     ret   = [True] * 2                                                          # bascules booleenes des routes des arrets en param
-    #     rt    = [self.getRoutesFromStation(begin), self.getRoutesFromStation(end)]  # objets Route des arrets depart et arrivee
-    #
-    #     sames = Station(self.getSameStations(rt[0], rt[1])[0])                      # premier arret en commun
-    #     print(sames)
-    #
-    #     IDsts = {begin.getName() : self.getRouteStations(begin).index(begin),            # liste des arrets
-    #              end.getName()   : self.getRouteStations(end).index(end),                # du trajet de chaque composante
-    #              sames.getName()  : self.getRouteStations(sames).index(sames)}     # (begin, end, same : premier arret en commun)
-    #
-    #     if self.isSameRoute(begin, end) :                        # si les arrets sont dans la meme route
-    #         if IDsts[end.getName()] < IDsts[begin.getName()] :   # si l'arret d'arrivee apparait avant le depart sur le trajet
-    #             ret[0] = False                                   # on est en sens retour pour la route de l'arret de depart
-    #     else :
-    #         if IDsts[begin.getName()] > IDsts[sames.getName()] :    # si l'arret de depart apparait avant le premier arret en commun
-    #             ret[0] = False                                      # sens retour pour la route du depart
-    #         if IDsts[end.getName()] < IDsts[sames.getName()] :      # si
-    #             ret[1] = False
-    #
-    #     return ret
+    def isGo(self, begin, end) :
+        """
+        Permet de determiner si l'on se trouveen sens aller
+        ou retour pour chaque route du reseau, en fonction
+        de l'arret de depart et celui d'arrivee
+        PARAM begin, end : arrets de depart et d'arrivee
+        RETURN : dictionnaire des sens des arret
+        RETURN TYPE : dict{} of boolean
+        """
+        ret   = [True] * 2                                                          # bascules booleenes des routes des arrets en param
+        rt    = [self.getRoutesFromStation(begin), self.getRoutesFromStation(end)]  # objets Route des arrets depart et arrivee
+
+        sames = Station(self.getSameStations(rt[0], rt[1])[0])                      # premier arret en commun
+        print(sames)
+
+        IDsts = {begin.getName() : self.getRouteStations(begin).index(begin),            # liste des arrets
+                 end.getName()   : self.getRouteStations(end).index(end),                # du trajet de chaque composante
+                 sames.getName()  : self.getRouteStations(sames).index(sames)}     # (begin, end, same : premier arret en commun)
+
+        if self.isSameRoute(begin, end) :                        # si les arrets sont dans la meme route
+            if IDsts[end.getName()] < IDsts[begin.getName()] :   # si l'arret d'arrivee apparait avant le depart sur le trajet
+                ret[0] = False                                   # on est en sens retour pour la route de l'arret de depart
+        else :
+            if IDsts[begin.getName()] > IDsts[sames.getName()] :    # si l'arret de depart apparait avant le premier arret en commun
+                ret[0] = False                                      # sens retour pour la route du depart
+            if IDsts[end.getName()] < IDsts[sames.getName()] :      # si
+                ret[1] = False
+
+        return ret
 
 
 
