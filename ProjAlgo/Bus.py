@@ -9,7 +9,7 @@ class Bus :
     Il possede un numero designant la ligne de bus, et une liste de ses arrets
     """
 
-    def __init__(self, id, stationList = [], h = None) :
+    def __init__(self, id, stationList, h = None) :
         """
         CONSTRUCTEUR de la classe Bus
         ATTRIBUTE _num : ligne du bus

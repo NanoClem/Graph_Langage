@@ -39,7 +39,7 @@ class Route :
     def getUnWeightRoute(self) :
         """
         Retourne la route du bus
-        return : liste des chemins empruntes par le bus
+        return : liste des arcs empruntes par le bus
         """
         return self.unWays
 
@@ -48,7 +48,7 @@ class Route :
     def getWeightRoute(self) :
         """
         Retourne la route du bus
-        return : liste des chemins empruntes par le bus, avec prise en compte des horaires
+        return : liste des arcs empruntes par le bus, avec prise en compte des horaires
         """
         return self.ways
 
@@ -178,3 +178,12 @@ class Route :
         #TERMINUS
         print("TERMINUS : " + self.bus.getTerminus().getName())
         print('\n')
+
+
+
+    def __eq__(self, route) :
+        """
+        Operateur d'egalite pour
+        la classe Route
+        """
+        return self.bus.getNum() == route.getBus().getNum()

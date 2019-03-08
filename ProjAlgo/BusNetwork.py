@@ -1,7 +1,7 @@
 """
 creator : decoopmc
 """
-
+from Station import Station
 from collections import OrderedDict
 import math
 
@@ -87,8 +87,57 @@ class BusNetwork :
 
 
 
+    def isSameRoute(self, sts1, sts2) :
+        """
+        Renvoie Vrai si les arrets partagent une route en commun,
+        Faux sinon
+        sts1, sts2 : arrets dont on veut connaitre l'existence d'une route en commun
+        """
+        ret = False
+        for rt in self.getRoutesFromStations(sts1) :
+            if sts2 in rt.getBus().getStations() :
+                ret = True
+
+        return ret
+
+
+
+    # def isGo(self, begin, end) :
+    #     """
+    #     Permet de determiner si l'on se trouveen sens aller
+    #     ou retour pour chaque route du reseau, en fonction
+    #     de l'arret de depart et celui d'arrivee
+    #     PARAM begin, end : arrets de depart et d'arrivee
+    #     RETURN : dictionnaire des sens des arret
+    #     RETURN TYPE : dict{} of boolean
+    #     """
+    #     ret   = [True] * 2                                                          # bascules booleenes des routes des arrets en param
+    #     rt    = [self.getRoutesFromStation(begin), self.getRoutesFromStation(end)]  # objets Route des arrets depart et arrivee
+    #
+    #     sames = Station(self.getSameStations(rt[0], rt[1])[0])                      # premier arret en commun
+    #     print(sames)
+    #
+    #     IDsts = {begin.getName() : self.getRouteStations(begin).index(begin),            # liste des arrets
+    #              end.getName()   : self.getRouteStations(end).index(end),                # du trajet de chaque composante
+    #              sames.getName()  : self.getRouteStations(sames).index(sames)}     # (begin, end, same : premier arret en commun)
+    #
+    #     if self.isSameRoute(begin, end) :                        # si les arrets sont dans la meme route
+    #         if IDsts[end.getName()] < IDsts[begin.getName()] :   # si l'arret d'arrivee apparait avant le depart sur le trajet
+    #             ret[0] = False                                   # on est en sens retour pour la route de l'arret de depart
+    #     else :
+    #         if IDsts[begin.getName()] > IDsts[sames.getName()] :    # si l'arret de depart apparait avant le premier arret en commun
+    #             ret[0] = False                                      # sens retour pour la route du depart
+    #         if IDsts[end.getName()] < IDsts[sames.getName()] :      # si
+    #             ret[1] = False
+    #
+    #     return ret
+
+
+
     def getStation(self, name) :
         """
+        PARAM name : nom de l'arret recherche
+        RETURN TYPE : Station
         Retourne l'arret correspondant au nom passe en parametre
         """
         ret = None
@@ -98,6 +147,46 @@ class BusNetwork :
                 break
 
         return ret
+
+
+
+    def getRouteStations(self, sts) :
+        """
+        Recupere la liste des arrets dont celui
+        en parametre fait parti
+        PARAM sts : arret dont on recherche la liste des arrets de sa route
+        RETURN : premiere liste trouvee des arrets contenant l'arret en parametre
+        RETURN TYPE : list[] of Station
+        """
+        ret = []
+        for net in self.network :
+            stsList = net.getBus().getStations()
+            if sts in stsList :
+                ret = stsList
+                break
+
+        return ret
+
+
+    # BUG : ne renvoie pas les arrets en commun
+    # TEMP : renvoie un seul arret en commun
+    def getRoutesFromStation(self, sts) :
+        """
+        Retourne le ou les objet(s) Route dont l'arret en parametre fait parti
+        Retourne une liste vide si la/les route(s) n'a/ont pas ete trouvee(s)
+        PARAM sts : arret dont on recherche sa route
+        RETURN : route de l'arret
+        RETURN TYPE : list[] of Route
+        """
+        ret = None
+        for net in self.network :
+            stsList = net.getBus().getStations()
+            if sts in stsList :
+                ret = net
+                break
+
+        return ret
+
 
 
 
@@ -287,7 +376,7 @@ class BusNetwork :
         """
         toPrint = self.getShortestWay(begin, end, doHours)
         toPrint.reverse()
-        print("DEPART :", begin, " DESTINATION :", end)
+        print("DEPART :", begin, "DESTINATION :", end)
 
         if not doHours :
             for sts in toPrint :
